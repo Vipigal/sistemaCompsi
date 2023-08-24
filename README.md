@@ -2,15 +2,15 @@
 
 
 # Alunos e cargos:
-Bianca Gabriela - Full stack
-Vinicius Pinho- Full stack
-Leo Soares- Back-end
-Felipe Zan- Front-end
+- Bianca Gabriela - Full stack
+- Vinicius Pinho- Full stack
+- Leo Soares- Back-end
+- Felipe Zan- Front-end
 
 # Tecnologias:
-Front-end: React.js
-Back-end: Node.js + Express.js
-Banco de dados: PostgreSQL
+- Front-end: React.js
+- Back-end: Node.js + Express.js
+- Banco de dados: PostgreSQL
 
 # Objetivo do Projeto
 O projeto desenvolvido será um website para o DAcompsci do ICEx, que tem como objetivo centralizar várias das atividades que envolvem o DA em uma plataforma. 
