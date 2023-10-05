@@ -1,0 +1,22 @@
+{
+  "name": "back_compsi",
+  "version": "1.0.0",
+  "description": "backend para o sistema compsi ",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "execute": "node main.js"
+  },
+  "author": "lorde/renato/vini/felipe",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "uuid": "^9.0.1"
+  }
+}
