@@ -1,13 +1,7 @@
-import express from "express";
-const app = express();
-
-import users from "./src/controller/users";
+import app from "./config/app"
 
 
-app.use("/", users);
 
-app.listen(8080, () => {
-	console.log("servidor iniciado em http://localhost:8080");
+app.listen(process.env.API_PORT, () => {
+	console.log(`servidor iniciado em http://localhost:${process.env.API_PORT}`);
 });
-
-
