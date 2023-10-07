@@ -1,7 +1,5 @@
-import app from "./config/app"
+const server = require("./config/app")
 
-
-
-app.listen(process.env.API_PORT, () => {
+server.listen(process.env.API_PORT, () => {
 	console.log(`servidor iniciado em http://localhost:${process.env.API_PORT}`);
 });

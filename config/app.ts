@@ -1,16 +1,16 @@
-import express from "express";
-import userRouter from "../src/controller/users"
-import dotenv from "dotenv"
-
-dotenv.config()
-
+const express = require("express");
 const app = express();
 
-app.use("/api/users", userRouter);
+const userRoute = require("../src/routes/usersRoute"); 
 
-app.get("/", async (req, res) => {
-	return res.json({ mensagem: "homepage" });
+app.use('/', userRoute);
+
+app.listen(3000, () => {
+  console.log('Funciona');
 });
 
+app.get("/", async (req, res) => {
+  return res.json({ mensagem: "homepage" });
+});
 
 export default app;
