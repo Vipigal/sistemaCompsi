@@ -2,7 +2,7 @@
 	"name": "back_compsi",
 	"version": "1.0.0",
 	"description": "backend para o sistema compsi ",
-	"main": "main.js",
+	"main": "main.ts",
 	"directories": {
 		"test": "test"
 	},

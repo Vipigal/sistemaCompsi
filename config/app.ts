@@ -1,5 +1,5 @@
 import express from "express";
-import userRouter from "../src/controller/users"
+import userRouter from "../src/routes/usersRoute"
 import dotenv from "dotenv"
 
 dotenv.config()
