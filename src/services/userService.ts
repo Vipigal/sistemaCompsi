@@ -1,5 +1,4 @@
-
-export class UsersService{
+export class UsersService {
   private static instance: UsersService;
   public static getInstance(): UsersService {
     if (!UsersService.instance) {
@@ -9,7 +8,7 @@ export class UsersService{
   }
 
   public create(resource: any) {
-    return "usuário criado"; 
+    return "usuário criado";
   }
 
   public deleteById(resourceId: any) {
