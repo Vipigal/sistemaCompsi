@@ -1,9 +1,21 @@
+import User from '../models/user';
+import db from "../models";
 
 const userService = {
-    createUser(resource: any) {
-      return "usuário criado";
-    },
-    
+   async createUser(req: any) {
+    try{
+      const { name, password, email, contactNumber } = req;
+      await db.User.create({
+        name,
+        password,
+        email,
+        contactNumber,
+      });
+    }catch (error: any) {
+      console.log(req.body);
+        };
+  },
+
     deleteUserById(resourceId: any) {
       return "usuario deletado";
     },

@@ -3,8 +3,8 @@ const router = express.Router();
 import usersService from '../services/userService';
 
 router.post("/", async (req : any, res: any) => {
-  const user = await usersService.createUser(req.body);
-  res.status(200).send({user});
+  req.body;
+  res.status(200).send(req.body)
 });
 
 router.get("/", async (req : any, res: any) => {

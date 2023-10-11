@@ -1,12 +1,14 @@
-import express from "express";
+import express from "express"
+import db from "./models"
 import userRouter from "./routes/userRoutes"
 import dotenv from "dotenv"
 
 const app = express();
-const db = require("./models")
+
 const port = process.env.PORT || 8081;
 
 dotenv.config()
+
 
 app.use("/api/users", userRouter);
 
