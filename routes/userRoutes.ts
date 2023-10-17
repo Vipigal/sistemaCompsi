@@ -8,7 +8,7 @@ router.post("/", async (req : any, res: any) => {
 });
 
 router.get("/", async (req : any, res: any) => {
-  const users = await usersService.listUsers(100, 0);
+  const users = await usersService.listUsers(100, 1);
   res.status(200).send(users)
 });
 

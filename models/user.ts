@@ -1,12 +1,16 @@
 'use strict';
-import { Model, UUID, UUIDV4 } from 'sequelize';
+import { DataTypes, Model, UUID, UUIDV4 } from 'sequelize';
+
+type UserType = 'student' | 'admin' | 'management';
 
 interface UserAtributtes {
   id:string, 
   name: string, 
   email: string, 
   password: string,
-  contactNumber : string
+  contactNumber : string,
+  userType : UserType,
+  description: string
 }
 
 export default (sequelize: any, DataTypes: any) => {
@@ -18,6 +22,8 @@ export default (sequelize: any, DataTypes: any) => {
    email!: string;
    password!: string;
    contactNumber! : string;
+   userType! : UserType;
+   description! : string;
     static associate(models: any) {
     }
   }
@@ -44,6 +50,17 @@ export default (sequelize: any, DataTypes: any) => {
       type: DataTypes.STRING,
       allowNull: false,
     }, 
+    userType:{
+      type: DataTypes.ENUM,
+      allowNull: false,
+      defaultValue: 'student',
+      values: ['student', 'admin', 'managment'],
+    },
+    description: {
+      type: DataTypes.STRING, 
+      allowNull: true,
+
+    }
   }, {
     sequelize,
     modelName: 'User',    
