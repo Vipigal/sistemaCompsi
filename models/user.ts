@@ -9,7 +9,7 @@ interface UserAtributtes {
   contactNumber : string
 }
 
-module.exports = (sequelize: any, DataTypes: any) => {
+export default (sequelize: any, DataTypes: any) => {
   class User extends Model <UserAtributtes> 
   implements UserAtributtes{
 
@@ -39,7 +39,6 @@ module.exports = (sequelize: any, DataTypes: any) => {
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     }, 
     contactNumber: {
       type: DataTypes.STRING,
@@ -47,7 +46,9 @@ module.exports = (sequelize: any, DataTypes: any) => {
     }, 
   }, {
     sequelize,
-    modelName: 'User',
-  });
+    modelName: 'User',    
+	  tableName: 'Users',
+	  indexes: [{ unique: true, fields: ["email"] }]
+});
   return User;
 };

@@ -4,7 +4,7 @@ import usersService from '../services/userService';
 
 router.post("/", async (req : any, res: any) => {
   const user = await usersService.createUser(req.body);
-  res.status(200).send({user});
+  res.status(200).send(user)
 });
 
 router.get("/", async (req : any, res: any) => {
