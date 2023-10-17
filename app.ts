@@ -9,6 +9,9 @@ const port = process.env.PORT || 8081;
 
 dotenv.config()
 
+var bodyParser = require('body-parser')
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 app.use("/api/users", userRouter);
 
@@ -26,4 +29,5 @@ app.listen(8080, () => {
     console.log(`servidor iniciado em http://localhost:${port}`)
     });
 
+app.use("/api/users", userRouter);
 export default app;

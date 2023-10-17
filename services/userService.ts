@@ -11,6 +11,7 @@ const userService = {
         email,
         contactNumber,
       });
+      return "usuario criado"
     }catch (error: any) {
       console.log(req.body);
         };
