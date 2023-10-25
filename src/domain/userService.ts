@@ -3,7 +3,7 @@ import { UserRepository } from "../repositories/userRepository";
 
 export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
 
-export interface UserAtributtes {
+export interface UserAttributes {
   id: number;
   name: string;
   email: string;
@@ -14,7 +14,7 @@ export interface UserAtributtes {
 }
 
 const userService = {
-  async createUser(body: UserAtributtes) {
+  async createUser(body: UserAttributes) {
     try {
       const { name, password, email, contactNumber, userType, description } = body;
       const existingUser = await UserRepository.getUserByEmail(email);
@@ -26,12 +26,18 @@ const userService = {
       await UserRepository.createUser(body);
       return "Usuario criado";
     } catch (error: unknown) {
-      return "Erro ao criar usuário";
+      console.error(error);
+      throw new Error("Erro ao criar usuário");
     }
   },
 
-  deleteUserById(resourceId: any) {
-    return "Usuário deletado";
+  deleteUserById(id: number) {
+    try {
+      const deletedUser = UserRepository.deleteUserById(id);
+      return "Usuário deletado";
+    } catch (error: unknown) {
+      return "Erro ao deletar usuário";
+    }
   },
 
   async listUsers(limit: number, page: number) {
@@ -51,16 +57,34 @@ const userService = {
     }
   },
 
-  getUserById(resourceId: any) {
-    return "Usuário encontrado por id";
+  getUserById(id: number) {
+    try {
+      const user = UserRepository.getUserById(id);
+      return user
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao buscar usuário");
+    }
   },
 
-  updateUserById(resource: any) {
-    return "Usuário editado por id";
+  updateUserById(id: number, body: Partial<UserAttributes>) {
+    try {
+      const updatedUser = UserRepository.updateUserById(id, body);
+      return "Usuário editado por id";
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao editar usuário");
+    }
   },
 
   async getUserByEmail(email: string) {
-    return "Usuário encontrado por email";
+    try {
+      const user = UserRepository.getUserByEmail(email);
+      return user;
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao buscar usuário");
+    }
   },
 };
 

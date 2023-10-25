@@ -1,13 +1,13 @@
 import prisma from "../config/dbConfig";
-import { UserAtributtes } from "../domain/userService";
+import { UserAttributes } from "../domain/userService";
 import { Optional } from "../utils/option";
 
 export interface IUserRepository {
-  getUserByEmail(email: string): Promise<UserAtributtes | null>;
-  getUserById(id: number): Promise<UserAtributtes | null>;
-  getUsers(): Promise<UserAtributtes[] | null>;
-  createUser(body: Optional<UserAtributtes, 'id'>): Promise<UserAtributtes | null>;
-  updateUserById(id: number, body: Partial<UserAtributtes>): Promise<UserAtributtes | null>;
+  getUserByEmail(email: string): Promise<UserAttributes | null>;
+  getUserById(id: number): Promise<UserAttributes | null>;
+  getUsers(): Promise<UserAttributes[] | null>;
+  createUser(body: Optional<UserAttributes, 'id'>): Promise<UserAttributes | null>;
+  updateUserById(id: number, body: Partial<UserAttributes>): Promise<UserAttributes | null>;
   deleteUserById(id: number): void;
 }
 
@@ -15,7 +15,7 @@ export const UserRepository: IUserRepository = {
   getUserByEmail: async (email: string) => {
     try {
       const user = await prisma.user.findUnique({ where: { email: email } });
-      if (user) return user as UserAtributtes;
+      if (user) return user as UserAttributes;
       else return null;
     } catch (error: unknown) {
       console.log(error);
@@ -25,7 +25,7 @@ export const UserRepository: IUserRepository = {
   getUserById: async (id: number) => {
     try {
       const user = await prisma.user.findUnique({ where: { id: id } });
-      if (user) return user as UserAtributtes;
+      if (user) return user as UserAttributes;
       else return null;
     } catch (error: unknown) {
       console.log(error);
@@ -35,26 +35,26 @@ export const UserRepository: IUserRepository = {
   getUsers: async () => {
     try {
       const users = await prisma.user.findMany();
-      if (users) return users as UserAtributtes[];
+      if (users) return users as UserAttributes[];
       else return null;
     } catch (error: unknown) {
       console.log(error);
       return null;
     }
   },
-  createUser: async (body: Optional<UserAtributtes, 'id'>) => {
+  createUser: async (body: Optional<UserAttributes, 'id'>) => {
     try {
       const newUser = await prisma.user.create({
         data: body
       });
-      if (newUser) return newUser as UserAtributtes;
+      if (newUser) return newUser as UserAttributes;
       else return null;
     } catch (error: unknown) {
       console.log(error);
       return null;
     }
   },
-  updateUserById: async (id: number, body: Partial<UserAtributtes>) => {
+  updateUserById: async (id: number, body: Partial<UserAttributes>) => {
     try {
       const updatedUser = await prisma.user.update({
         where: {
@@ -62,7 +62,7 @@ export const UserRepository: IUserRepository = {
         },
         data: body
       });
-      if (updatedUser) return updatedUser as UserAtributtes;
+      if (updatedUser) return updatedUser as UserAttributes;
       else return null;
     } catch (error: unknown) {
       console.log(error);

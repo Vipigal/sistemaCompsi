@@ -13,17 +13,17 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.get("/:ID", async (req: Request, res: Response) => {
-  const user = usersService.getUserById(req.params.ID);
+  const user = usersService.getUserById(parseInt(req.params.ID));
   res.status(200).send(user);
 });
 
 router.delete("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.deleteUserById(req.params.ID);
+  const user = await usersService.deleteUserById(parseInt(req.params.ID));
   res.status(200).send(user);
 });
 
 router.put("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.updateUserById(req.body);
+  const user = await usersService.updateUserById(parseInt(req.params.ID), req.body);
   res.status(200).send(user);
 });
 
