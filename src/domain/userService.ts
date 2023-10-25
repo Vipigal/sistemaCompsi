@@ -1,46 +1,37 @@
 import { get } from "http";
-import db from "../repositories/user";
-import { UserType } from "../repositories/user/userModel";
+import { UserRepository } from "../repositories/userRepository";
 
-interface IUser {
-  id: string;
+export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
+
+export interface UserAtributtes {
+  id: number;
   name: string;
   email: string;
   password: string;
   contactNumber: string;
   userType: UserType;
-  description: string;
+  description: string | null;
 }
 
 const userService = {
-  async createUser(body: IUser) {
+  async createUser(body: UserAtributtes) {
     try {
-      const { name, password, email, contactNumber, userType, description } =
-        body;
-      const existingUser = await db.User.findOne({
-        where: { email },
-      });
+      const { name, password, email, contactNumber, userType, description } = body;
+      const existingUser = await UserRepository.getUserByEmail(email);
 
       if (existingUser) {
         return "Este email já está em uso.";
       }
 
-      await db.User.create({
-        name,
-        password,
-        email,
-        contactNumber,
-        userType,
-        description,
-      });
-      return "usuario criado";
+      await UserRepository.createUser(body);
+      return "Usuario criado";
     } catch (error: unknown) {
-      return "erro ao criar usuário";
+      return "Erro ao criar usuário";
     }
   },
 
   deleteUserById(resourceId: any) {
-    return "usuario deletado";
+    return "Usuário deletado";
   },
 
   async listUsers(limit: number, page: number) {
@@ -49,12 +40,10 @@ const userService = {
         throw new Error("O número da página deve ser maior ou igual a 1.");
       }
 
-      get;
-
-      const users = await db.User.findAll({
-        limit,
-        offset: (page - 1) * limit, // Calcula o offset a partir da página
-      });
+      const users = await UserRepository.getUsers(
+        // limit,
+        // offset: (page - 1) * limit, // Calcula o offset a partir da página
+      );
       return users;
     } catch (error) {
       console.error(error);
@@ -63,15 +52,15 @@ const userService = {
   },
 
   getUserById(resourceId: any) {
-    return "usuário encontrado por id";
+    return "Usuário encontrado por id";
   },
 
   updateUserById(resource: any) {
-    return "usuário editado por id";
+    return "Usuário editado por id";
   },
 
   async getUserByEmail(email: string) {
-    return "usuário encontrado por email";
+    return "Usuário encontrado por email";
   },
 };
 

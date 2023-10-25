@@ -13,7 +13,7 @@ router.get("/", async (req: Request, res: Response) => {
 });
 
 router.get("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.getUserById(req.params.ID);
+  const user = usersService.getUserById(req.params.ID);
   res.status(200).send(user);
 });
 

@@ -1,17 +1,5 @@
 import prisma from "../../config/dbConfig";
 
-export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
-
-export interface UserAtributtes {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  contactNumber: string;
-  userType: UserType;
-  description?: string;
-}
-
 export interface IUserRepository {
   getUserById(id: number): Promise<UserAtributtes | null>;
   getUsers(): Promise<UserAtributtes[] | null>;
@@ -44,9 +32,27 @@ export const UserRepository: IUserRepository = {
   createUser: async (body: UserAtributtes) => {
     try {
       const newUser = await prisma.user.create(body);
+      return newUser;
     } catch (error: unknown) {
       console.log(error);
       return null;
     }
   },
+  updateUserById: async (id : number) => {
+    try {
+      const updatedUser = await prisma.user.update(id);
+      return updatedUser;
+    } catch(error: unknown) {
+      console.log(error);
+      return null;
+    }
+  },
+  deleteUserById: async (id: number) => {
+    try {
+      const deletedUser = await prisma.user.delete(id);
+    } catch(error: unknown) {
+      console.log(error);
+      return null;
+    }
+  }
 };
