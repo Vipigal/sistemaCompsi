@@ -1,46 +1,43 @@
 import { get } from "http";
-import db from "../repositories/user";
-import { UserType } from "../repositories/user/userModel";
+import { UserRepository } from "../repositories/userRepository";
 
-interface IUser {
-  id: string;
+export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
+
+export interface UserAttributes {
+  id: number;
   name: string;
   email: string;
   password: string;
   contactNumber: string;
   userType: UserType;
-  description: string;
+  description: string | null;
 }
 
 const userService = {
-  async createUser(body: IUser) {
+  async createUser(body: UserAttributes) {
     try {
-      const { name, password, email, contactNumber, userType, description } =
-        body;
-      const existingUser = await db.User.findOne({
-        where: { email },
-      });
+      const { name, password, email, contactNumber, userType, description } = body;
+      const existingUser = await UserRepository.getUserByEmail(email);
 
       if (existingUser) {
         return "Este email já está em uso.";
       }
 
-      await db.User.create({
-        name,
-        password,
-        email,
-        contactNumber,
-        userType,
-        description,
-      });
-      return "usuario criado";
+      await UserRepository.createUser(body);
+      return "Usuario criado";
     } catch (error: unknown) {
-      return "erro ao criar usuário";
+      console.error(error);
+      throw new Error("Erro ao criar usuário");
     }
   },
 
-  deleteUserById(resourceId: any) {
-    return "usuario deletado";
+  deleteUserById(id: number) {
+    try {
+      const deletedUser = UserRepository.deleteUserById(id);
+      return "Usuário deletado";
+    } catch (error: unknown) {
+      return "Erro ao deletar usuário";
+    }
   },
 
   async listUsers(limit: number, page: number) {
@@ -49,12 +46,10 @@ const userService = {
         throw new Error("O número da página deve ser maior ou igual a 1.");
       }
 
-      get;
-
-      const users = await db.User.findAll({
-        limit,
-        offset: (page - 1) * limit, // Calcula o offset a partir da página
-      });
+      const users = await UserRepository.getUsers(
+        // limit,
+        // offset: (page - 1) * limit, // Calcula o offset a partir da página
+      );
       return users;
     } catch (error) {
       console.error(error);
@@ -62,16 +57,34 @@ const userService = {
     }
   },
 
-  getUserById(resourceId: any) {
-    return "usuário encontrado por id";
+  getUserById(id: number) {
+    try {
+      const user = UserRepository.getUserById(id);
+      return user
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao buscar usuário");
+    }
   },
 
-  updateUserById(resource: any) {
-    return "usuário editado por id";
+  updateUserById(id: number, body: Partial<UserAttributes>) {
+    try {
+      const updatedUser = UserRepository.updateUserById(id, body);
+      return "Usuário editado por id";
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao editar usuário");
+    }
   },
 
   async getUserByEmail(email: string) {
-    return "usuário encontrado por email";
+    try {
+      const user = UserRepository.getUserByEmail(email);
+      return user;
+    } catch (error: unknown) {
+      console.error(error);
+      throw new Error("Erro ao buscar usuário");
+    }
   },
 };
 

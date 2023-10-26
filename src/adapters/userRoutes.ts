@@ -1,29 +1,29 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import usersService from "../domain/userService";
+import userService from "../domain/userService";
 
 router.post("/", async (req: Request, res: Response) => {
-  const user = await usersService.createUser(req.body);
+  const user = await userService.createUser(req.body);
   res.status(200).send(user);
 });
 
 router.get("/", async (req: Request, res: Response) => {
-  const users = await usersService.listUsers(100, 1);
+  const users = await userService.listUsers(100, 1);
   res.status(200).send(users);
 });
 
 router.get("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.getUserById(req.params.ID);
+  const user = userService.getUserById(parseInt(req.params.ID));
   res.status(200).send(user);
 });
 
 router.delete("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.deleteUserById(req.params.ID);
+  const user = await userService.deleteUserById(parseInt(req.params.ID));
   res.status(200).send(user);
 });
 
 router.put("/:ID", async (req: Request, res: Response) => {
-  const user = await usersService.updateUserById(req.body);
+  const user = await userService.updateUserById(parseInt(req.params.ID), req.body);
   res.status(200).send(user);
 });
 
