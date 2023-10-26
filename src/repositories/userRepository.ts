@@ -12,26 +12,30 @@ export interface IUserRepository {
 }
 
 export const UserRepository: IUserRepository = {
-  getUserByEmail: async (email: string) => {
+ 
+  async getUserByEmail(email: string): Promise<UserAttributes | null> {
     try {
-      const user = await prisma.user.findUnique({ where: { email: email } });
+      const user = await prisma.user.findFirst({ where: { email: email } });
       if (user) return user as UserAttributes;
       else return null;
-    } catch (error: unknown) {
+      
+    } catch (error) {
       console.log(error);
-      return null;
+      throw new Error('Algo deu errado');
     }
   },
+
   getUserById: async (id: number) => {
     try {
       const user = await prisma.user.findUnique({ where: { id: id } });
       if (user) return user as UserAttributes;
       else return null;
-    } catch (error: unknown) {
+    } catch (error) {
       console.log(error);
       return null;
     }
   },
+
   getUsers: async () => {
     try {
       const users = await prisma.user.findMany();
@@ -42,6 +46,7 @@ export const UserRepository: IUserRepository = {
       return null;
     }
   },
+
   createUser: async (body: Optional<UserAttributes, 'id'>) => {
     try {
       const newUser = await prisma.user.create({
@@ -54,6 +59,7 @@ export const UserRepository: IUserRepository = {
       return null;
     }
   },
+
   updateUserById: async (id: number, body: Partial<UserAttributes>) => {
     try {
       const updatedUser = await prisma.user.update({

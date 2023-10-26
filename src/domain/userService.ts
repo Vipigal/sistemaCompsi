@@ -19,15 +19,23 @@ const userService = {
       const { name, password, email, contactNumber, userType, description } = body;
       const existingUser = await UserRepository.getUserByEmail(email);
 
-      if (existingUser) {
-        return "Este email já está em uso.";
-      }
+      if (existingUser) 
+        throw new Error("email em uso")  
 
-      await UserRepository.createUser(body);
-      return "Usuario criado";
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error("Erro ao criar usuário");
+      if (!["ALUNO", "ADMIN", "GERENCIAL"].includes(userType)) 
+        throw new Error("tipo de usuário invalido")
+    
+        await UserRepository.createUser(body);
+        return "Usuario criado";
+        
+      } catch (error: unknown) {
+        console.error(error);
+        const errorMessage = error instanceof Error ? error.message : "Erro desconhecido";
+        
+        return {
+          message: errorMessage,
+          status: 400,
+        }
     }
   },
 
