@@ -1,6 +1,4 @@
-import { get } from "http";
 import { UserRepository } from "../repositories/userRepository";
-import { TrataErrorUtil } from "../utils/errorHandler";
 
 export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
 
@@ -14,79 +12,62 @@ export interface UserAttributes {
   description: string | null;
 }
 
+const isUpdateAllowed = (cargo: string | undefined) => {
+  if (!cargo) return null;
+  return cargo === "ADMIN";
+};
+
 const userService = {
   async createUser(body: UserAttributes) {
-    try {
-      const { name, password, email, contactNumber, userType, description } = body;
-      const existingUser = await UserRepository.getUserByEmail(email);
+    const { email, userType } = body;
+    const existingUser = await UserRepository.getUserByEmail(email);
 
-      if (existingUser) 
-        throw new Error("email em uso")  
+    if (existingUser) throw new Error("email em uso");
 
-      if (!["ALUNO", "ADMIN", "GERENCIAL"].includes(userType)) 
-        throw new Error("tipo de usuário invalido")
-    
-        await UserRepository.createUser(body);
-        return "Usuario criado";
-        
-      } catch (error: unknown) {
-       return TrataErrorUtil(error);
-    }
+    if (!["ALUNO", "ADMIN", "GERENCIAL"].includes(userType))
+      throw new Error("tipo de usuário invalido");
+
+    await UserRepository.createUser(body);
+    return "Usuario criado";
   },
 
   async deleteUserById(id: number) {
-    try {
     const existingUser = await UserRepository.getUserById(id);
-      if (!existingUser) 
-        throw new Error("Usuario não existe");
-      
-      UserRepository.deleteUserById(id);
-      return "Usuário deletado";
-    } catch (error: unknown) {
-        return TrataErrorUtil(error);
-  }
-},
+    if (!existingUser) throw new Error("Usuario não existe");
+
+    UserRepository.deleteUserById(id);
+    return "Usuário deletado";
+  },
 
   async listUsers(limit: number, page: number) {
-    try {
-      if (page < 1) {
-        throw new Error("O número da página deve ser maior ou igual a 1.");
-      }
+    if (page < 1) {
+      throw new Error("O número da página deve ser maior ou igual a 1.");
+    }
 
-      const users = await UserRepository.getUsers(
-        // limit,
-        // offset: (page - 1) * limit, // Calcula o offset a partir da página
-      );
-      return users;
-    } catch (error: unknown) {
-        return TrataErrorUtil(error);
-  }
-},
+    const users = await UserRepository
+      .getUsers
+      // limit,
+      // offset: (page - 1) * limit, // Calcula o offset a partir da página
+      ();
+    return users;
+  },
 
   getUserById(id: number) {
-    try {
-      const user = UserRepository.getUserById(id);
-      return user
-    } catch (error: unknown) {
-        return TrataErrorUtil(error);
-  }
-},
+    const user = UserRepository.getUserById(id);
+    return user;
+  },
 
   updateUserById(id: number, body: Partial<UserAttributes>) {
-    try {
-      const updatedUser = UserRepository.updateUserById(id, body);
-      return "Usuário editado por id";
-    } catch (error: unknown) {
-        return TrataErrorUtil(error);
-  }},
+    if (isUpdateAllowed(body.userType)) {
+      UserRepository.updateUserById(id, body);
+    } else {
+      throw new Error("Você não tem permissão para fazer isso");
+    }
+  },
 
   async getUserByEmail(email: string) {
-    try {
-      const user = UserRepository.getUserByEmail(email);
-      return user;
-    } catch (error: unknown) {
-        return TrataErrorUtil(error);
-    }
+    const user = UserRepository.getUserByEmail(email);
+    return user;
   },
 };
 
