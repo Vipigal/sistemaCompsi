@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import prisma from "../config/dbConfig";
 import { UserAttributes } from "../domain/userService";
 import { Optional } from "../utils/option";
@@ -21,15 +22,16 @@ export const UserRepository: IUserRepository = {
       
     } catch (error) {
       console.log(error);
-      throw new Error('Algo deu errado');
+      return null;
     }
   },
 
-  getUserById: async (id: number) => {
+  async getUserById(id: number): Promise<UserAttributes | null> {
     try {
-      const user = await prisma.user.findUnique({ where: { id: id } });
+      const user = await prisma.user.findFirst({ where: {id : id} });
       if (user) return user as UserAttributes;
       else return null;
+      
     } catch (error) {
       console.log(error);
       return null;

@@ -1,19 +1,18 @@
 import { get } from "http";
-import { UserRepository } from "../repositories/userRepository";
+import { PostRepository } from "../repositories/postRepository";
 import { TrataErrorUtil } from "../utils/errorHandler";
+import { UserAttributes } from "./userService";
 
 export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
 
-export interface UserAttributes {
+export interface PostAttributes {
   id: number;
-  name: string;
-  email: string;
-  password: string;
-  contactNumber: string;
+  title: string;
+  content: string;
+  published: boolean;
   userType: UserType;
-  description: string | null;
+  authorId: number;
 }
-
 const userService = {
   async createUser(body: UserAttributes) {
     try {
