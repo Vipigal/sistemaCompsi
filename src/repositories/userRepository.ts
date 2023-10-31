@@ -23,26 +23,28 @@ async function hashPassword(Senha: string) {
 }
 
 export const UserRepository: IUserRepository = {
-  getUserByEmail: async (email: string) => {
+  async getUserByEmail(email: string): Promise<UserAttributes | null> {
     try {
-      const user = await prisma.user.findUnique({ where: { email: email } });
+      const user = await prisma.user.findFirst({ where: { email: email } });
       if (user) return user as UserAttributes;
       else return null;
-    } catch (error: unknown) {
+    } catch (error) {
       console.log(error);
       return null;
     }
   },
-  getUserById: async (id: number) => {
+
+  async getUserById(id: number): Promise<UserAttributes | null> {
     try {
-      const user = await prisma.user.findUnique({ where: { id: id } });
+      const user = await prisma.user.findFirst({ where: { id: id } });
       if (user) return user as UserAttributes;
       else return null;
-    } catch (error: unknown) {
+    } catch (error) {
       console.log(error);
       return null;
     }
   },
+
   getUsers: async () => {
     try {
       const users = await prisma.user.findMany();
@@ -68,6 +70,7 @@ export const UserRepository: IUserRepository = {
       return null;
     }
   },
+
   updateUserById: async (id: number, body: Partial<UserAttributes>) => {
     try {
       if (body.password) {
