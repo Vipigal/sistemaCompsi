@@ -16,6 +16,11 @@ enum Role {
   GERENCIAL
 }
 
+enum Category {
+  PRODUCT
+  EVENT
+}
+
 model User {
   id            Int     @id @default(autoincrement())
   email         String  @unique
@@ -34,4 +39,14 @@ model Post {
   published Boolean @default(false)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
+}
+
+
+model Product {
+  id        Int     @id @default(autoincrement())
+  name     String
+  description   String?
+  price  Float
+  image    String?
+  productType Category @default(PRODUCT)
 }
