@@ -16,6 +16,14 @@ enum Role {
   GERENCIAL
 }
 
+enum Status {
+  NOVO
+  TRANSFERIDO
+  RESPONDIDO
+  EM ESPERA 
+  RESOLVIDO
+}
+
 model User {
   id            Int     @id @default(autoincrement())
   email         String  @unique
@@ -32,6 +40,15 @@ model Post {
   title     String
   content   String?
   published Boolean @default(false)
+  author    User    @relation(fields: [authorId], references: [id])
+  authorId  Int
+}
+
+model Ticket {
+  id        Int     @id @default(autoincrement())
+  title     String
+  content   String
+  situation    Status @default(NOVO)
   author    User    @relation(fields: [authorId], references: [id])
   authorId  Int
 }
