@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./src/adapters/userRoutes";
+import productRouter from "./src/adapters/userRoutes";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 
@@ -14,6 +15,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/api/users", userRouter);
+app.use("/api/products", productRouter);
 
 app.get("/", async (req, res) => {
   return res.json({ mensagem: "homepage" });
