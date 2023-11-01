@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { UserRepository } from "../repositories/userRepository";
 import { compare } from "bcrypt";
-import { UserAttributes } from "../domain/userService";
+import { UserAttributes } from "../domain/models/User";
 import { JwtPayload, sign, verify } from "jsonwebtoken";
 import { statusCodes } from "../utils/statusCodes";
 

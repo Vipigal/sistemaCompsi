@@ -1,5 +1,5 @@
 import prisma from "../config/dbConfig";
-import { PostAttributes } from "../domain/postService";
+import { PostAttributes } from "../domain/models/Post";
 import { Optional } from "../utils/option";
 
 export interface IPostRepository {
@@ -7,6 +7,7 @@ export interface IPostRepository {
     body: Optional<PostAttributes, "id">
   ): Promise<PostAttributes | null>;
   getPostById(id: number): Promise<PostAttributes | null>;
+  getAllPosts(): Promise<PostAttributes[] | null>;
 }
 
 export const PostRepository: IPostRepository = {
@@ -26,6 +27,16 @@ export const PostRepository: IPostRepository = {
     try {
       const post = await prisma.post.findFirst({ where: { id: id } });
       if (post) return post as PostAttributes;
+      else return null;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+  async getAllPosts() {
+    try {
+      const post = await prisma.post.findMany();
+      if (post) return post as PostAttributes[];
       else return null;
     } catch (error) {
       console.log(error);
