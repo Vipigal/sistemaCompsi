@@ -4,7 +4,7 @@ import productService from "../domain/productService";
 
 router.post("/", async (req: Request, res: Response) => {
     const product = await productService.createProduct(req.body);
-    res.status(200).send(product);
+    res.status(200).send("Produto cadastrado com sucesso");
   });
   
   router.get("/", async (req: Request, res: Response) => {
@@ -19,12 +19,12 @@ router.post("/", async (req: Request, res: Response) => {
   
   router.delete("/:ID", async (req: Request, res: Response) => {
     const product = await productService.deleteProductById(parseInt(req.params.ID));
-    res.status(200).send(product);
+    res.status(200).send("Produto removido com sucesso");
   });
   
   router.put("/:ID", async (req: Request, res: Response) => {
     const product = await productService.updateProductbyId(parseInt(req.params.ID), req.body);
-    res.status(200).send(product);
+    res.status(200).send("Produto atualizado com sucesso");
   });
   
   export default router;
