@@ -1,5 +1,6 @@
 import express from "express";
 import userRouter from "./src/adapters/userRoutes";
+import postRouter from "./src/adapters/postRoutes";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -25,6 +26,7 @@ app.use(
 app.use(cookieParser());
 
 app.use("/api/users", userRouter);
+app.use("/api/posts", postRouter);
 
 app.listen(port, () => {
   console.log(`servidor iniciado em http://localhost:${port}`);

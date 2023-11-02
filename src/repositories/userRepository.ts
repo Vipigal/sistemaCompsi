@@ -1,6 +1,6 @@
 import { hash } from "bcrypt";
 import prisma from "../config/dbConfig";
-import { UserAttributes } from "../domain/userService";
+import { UserAttributes } from "../domain/models/User";
 import { Optional } from "../utils/option";
 
 export interface IUserRepository {

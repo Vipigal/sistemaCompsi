@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import userService from "../domain/userService";
+import userService from "../domain/services/userService";
 import {
   auth,
   checkIfLoggedIn,
