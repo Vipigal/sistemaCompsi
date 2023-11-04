@@ -1,6 +1,9 @@
 import express from "express";
+
 import userRouter from "./src/adapters/userRoutes";
+import productRouter from "./src/adapters/productRoutes";
 import postRouter from "./src/adapters/postRoutes";
+
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import cors from "cors";
@@ -16,6 +19,9 @@ dotenv.config();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+
+
+
 app.use(
   cors({
     origin: process.env.APP_URL || "http://localhost:5173", //retirar condicao assim que todos sincronizarem .env -> falha de seguranca
@@ -23,8 +29,10 @@ app.use(
   })
 );
 
+
 app.use(cookieParser());
 
+app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 
