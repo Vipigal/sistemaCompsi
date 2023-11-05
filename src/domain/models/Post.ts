@@ -3,8 +3,8 @@ import { UserAttributes } from "./User";
 export interface PostAttributes {
   id: number;
   title: string;
-  content: string | null;
+  imageURL: string | null;
+  description: string | null;
   published: boolean;
- // author : UserAttributes;
-  authorId: number;
+  authorEmail: string | null;
 }

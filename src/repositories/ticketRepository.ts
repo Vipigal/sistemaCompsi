@@ -6,7 +6,7 @@ import { Optional } from "../utils/option";
 export interface ITicketRepository {
   getTicketById(id: number): Promise<TicketAttributes | null>;
   getTickets(): Promise<TicketAttributes[] | null>;
-  createTicket( body: TicketAttributes): Promise<TicketAttributes | null>;
+  createTicket( body: TicketAttributes, email: string): Promise<TicketAttributes | null>;
   updateTicketById(
     id: number,
     body: Partial<TicketAttributes>
@@ -38,10 +38,15 @@ export const TicketRepository: ITicketRepository = {
       return null;
     }
   },
-  createTicket: async (body) => {
+  createTicket: async (body, email: string) => {
     try {
       const newTicket = await prisma.ticket.create({
-        data: body,
+        data: {
+          title: body.title,
+          content: body.content,
+          status: body.status,
+          authorEmail: email
+        },
       });
       if (newTicket) return newTicket as TicketAttributes;
       else return null;

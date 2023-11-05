@@ -17,7 +17,7 @@ router.get("/:ID", async (req: Request, res: Response) => {
 
 router.post("/", async (req: Request, res: Response) => {
   try {
-    await ticketService.createTicket(req.body);
+    await ticketService.createTicket(req.body, "MUDAR!!!!!!!");
     res.status(200).json("Usuário criado com sucesso!");
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);

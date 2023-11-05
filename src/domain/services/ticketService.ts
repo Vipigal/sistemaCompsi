@@ -1,20 +1,22 @@
 import { stat } from "fs";
 import { TicketRepository } from "../../repositories/ticketRepository";
 import { TicketAttributes } from "../models/Ticket";
-import { StatusType } from "../models/Ticket";
+import { Status } from "../models/Ticket";
 
 
 const ticketService = {
-  async createTicket(body: TicketAttributes) {
-    const {id, statusType} = body;
+  async createTicket(body: TicketAttributes, email: string) {
+    const {id, status} = body;
     const existingTicket = await TicketRepository.getTicketById(id);
 
     if (existingTicket) throw new Error("email em uso");
 
-    if (!["NOVO", "TRANSFERIDO", "RESPONDIDO", "ESPERA ", "RESOLVIDO"].includes(statusType))
+
+    if (!status.includes(status))
+
       throw new Error("tipo de status invalido");
 
-    await TicketRepository.createTicket(body);
+    await TicketRepository.createTicket(body, email);
     return "Usuario criado";
   },
 

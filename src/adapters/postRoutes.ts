@@ -30,7 +30,7 @@ router.post("/", upload.single("Foto"), async (req: Request, res: Response) => {
     if (req.file) {
       req.body.content = (req.file as Express.MulterS3.File).location;
     } else req.body.content = null;
-    await postService.createPost(req.body);
+    await postService.createPost(req.body, "MUDAR!!!!!!!");
     res.status(200).json("Post criado com sucesso");
   } catch (err) {
     const error = TrataErrorUtil(err);
