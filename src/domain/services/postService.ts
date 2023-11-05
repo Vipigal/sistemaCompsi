@@ -1,5 +1,12 @@
 import { PostRepository } from "../../repositories/postRepository";
 import { PostAttributes } from "../models/Post";
+import { PostType } from "../models/Post";
+
+function verificarTipoPost(type: string | null): type is PostType{
+  if (type === "SECTION" || type === "BANNER" ||type === "DEFAULT")
+    return true;
+  return false;
+}
 
 const postService = {
   createPost: async (body: PostAttributes, email: string | undefined) => {
@@ -18,16 +25,23 @@ const postService = {
     if (post) return post;
     else throw new Error("Nenhum post cadastrado");
   },
-  listPosts: async (limit: number, page: number) => {
+  listPosts: async (type: string | null, limit: number, page: number) => {
+    let users;
     if (page < 1) {
       throw new Error("O número da página deve ser maior ou igual a 1.");
     }
 
-    const users = await PostRepository
-      .getAllPosts
-      // limit,
+    if (!type){
+      users = await PostRepository.getAllPosts(null);
+      return users;
+    }
+
+    if(!verificarTipoPost(type))
+      throw new Error ("O tipo de post é inválido");
+
+    users = await PostRepository.getAllPosts(type);
+            // limit,
       // offset: (page - 1) * limit, // Calcula o offset a partir da página
-      ();
     return users;
   },
 };

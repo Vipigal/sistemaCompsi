@@ -24,7 +24,7 @@ router.get("/:ID", async (req: Request, res: Response) => {
 
 router.post("/", auth, async (req: Request, res: Response) => {
   try {
-    await ticketService.createTicket(req.body, req.user?.email);
+    await ticketService.createTicket(req.body, req.user?.Email);
     res.status(200).json("Usuário criado com sucesso!");
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);

@@ -29,6 +29,12 @@ enum Category {
   EVENT
 }
 
+enum PostType {
+  BANNER
+  SECTION
+  DEFAULT
+}
+
 model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
@@ -52,6 +58,7 @@ model Post {
   published Boolean @default(false)
   author    User?    @relation(fields: [authorEmail], references: [email])
   authorEmail    String?
+  type PostType @default(DEFAULT)
 }
 
 model Ticket {

@@ -1,3 +1,6 @@
+export type PostType = "BANNER" | "SECTION" | "DEFAULT";
+
+
 export interface PostAttributes {
   id: number;
   title: string;
@@ -6,4 +9,5 @@ export interface PostAttributes {
   description: string | null;
   published: boolean;
   authorEmail: string | null;
+  type: PostType;
 }

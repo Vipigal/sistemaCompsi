@@ -24,9 +24,19 @@ router.get("/:ID", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/:type", async (req: Request, res: Response) => {
+  try {
+    const post = await postService.listPosts(req.params.type , 1, 100);
+    res.status(200).json(post);
+  } catch (err: unknown) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
 router.get("/", async (req: Request, res: Response) => {
   try {
-    const post = await postService.listPosts(1, 100);
+    const post = await postService.listPosts(null , 1, 100);
     res.status(200).json(post);
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);
@@ -39,8 +49,18 @@ router.post("/", auth, upload.single("Foto"), async (req: Request, res: Response
     if (req.file) {
       req.body.content = (req.file as Express.MulterS3.File).location;
     } else req.body.content = null;
-    await postService.createPost(req.body, req.user?.email);
+    await postService.createPost(req.body, req.user?.Email);
     res.status(200).json("Post criado com sucesso");
+  } catch (err) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
+router.delete("/:ID", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
+  try {
+
+    res.status(200).json("Post apagado com sucesso");
   } catch (err) {
     const error = TrataErrorUtil(err);
     res.status(error.status).json(error.message);
