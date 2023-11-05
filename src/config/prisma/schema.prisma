@@ -31,8 +31,21 @@ enum Category {
 
 enum PostType {
   BANNER
-  SECTION
+  SOBRE
+  GESTAO
+  TICKET
   DEFAULT
+}
+
+enum OrderType {
+  PURCHASE
+  WISH
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  COMPLETE
 }
 
 model User {
@@ -82,8 +95,16 @@ model Product {
 
 model Order {
   id Int @id @default(autoincrement())
+  type OrderType @default(WISH)
+  status OrderStatus? 
+
   user User @relation(fields: [userEmail], references: [email])
   userEmail String
+
   product Product @relation(fields: [productName], references: [name])
   productName String
+  productPrice Float 
+
+  amount Int
+  fee Float @default(0)
 }

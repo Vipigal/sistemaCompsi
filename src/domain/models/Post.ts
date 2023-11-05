@@ -1,4 +1,4 @@
-export type PostType = "BANNER" | "SECTION" | "DEFAULT";
+export type PostType = "BANNER" | "SOBRE" | "GESTAO" | "TICKET" | "DEFAULT";
 
 
 export interface PostAttributes {

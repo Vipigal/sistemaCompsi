@@ -23,7 +23,7 @@ async function hashPassword(Senha: string) {
 }
 
 export const UserRepository: IUserRepository = {
-  async getUserByEmail(email: string): Promise<UserAttributes | null> {
+  async getUserByEmail(email: string){
     try {
       const user = await prisma.user.findFirst({ where: { email: email } });
       if (user) return user as UserAttributes;
@@ -34,7 +34,7 @@ export const UserRepository: IUserRepository = {
     }
   },
 
-  async getUserById(id: number): Promise<UserAttributes | null> {
+  async getUserById(id: number){
     try {
       const user = await prisma.user.findFirst({ where: { id: id } });
       if (user) return user as UserAttributes;

@@ -28,22 +28,32 @@ const userService = {
     return "Usuário deletado";
   },
 
+  async getUserById(id: number) {
+    if (!id) {
+      throw new Error("Usuário não cadastrado");
+    }
+    const user = await UserRepository.getUserById(id);
+    return user;
+  },
+
+  async getUserByEmail(email: string | undefined) {
+    if (!email) {
+      throw new Error("Usuário não cadastrado");
+    }
+    const user = await UserRepository.getUserByEmail(email);
+    return user;
+  },
+
   async listUsers(limit: number, page: number) {
     if (page < 1) {
       throw new Error("O número da página deve ser maior ou igual a 1.");
     }
 
-    const users = await UserRepository
-      .getUsers
-      // limit,
-      // offset: (page - 1) * limit, // Calcula o offset a partir da página
-      ();
-    return users;
-  },
+    // limit,
+    // offset: (page - 1) * limit, // Calcula o offset a partir da página
 
-  getUserById(id: number) {
-    const user = UserRepository.getUserById(id);
-    return user;
+    const users = await UserRepository.getUsers();
+    return users;
   },
 
   updateUserById(id: number, body: Partial<UserAttributes>) {
@@ -52,11 +62,6 @@ const userService = {
     } else {
       throw new Error("Você não tem permissão para fazer isso");
     }
-  },
-
-  async getUserByEmail(email: string) {
-    const user = UserRepository.getUserByEmail(email);
-    return user;
   },
 };
 
