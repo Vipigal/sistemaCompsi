@@ -14,7 +14,8 @@ export const PostRepository: IPostRepository = {
       const newPost = await prisma.post.create({
         data: {
           title: body.title,
-          content: body.content,
+          imageURL: body.imageURL,
+          description: body.description,
           published: body.published,
           authorEmail: email
         },

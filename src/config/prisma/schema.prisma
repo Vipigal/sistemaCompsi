@@ -45,7 +45,8 @@ model User {
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
-  content   String?
+  imageURL   String?
+  description String?
   published Boolean @default(false)
   author    User?    @relation(fields: [authorEmail], references: [email])
   authorEmail    String?
