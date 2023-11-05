@@ -1,5 +1,5 @@
 import prisma from "../config/dbConfig";
-import { ProductAttributes } from "../domain/models/Product"; 
+import { ProductAttributes } from "../domain/models/Product";
 import { Optional } from "../utils/option";
 
 export interface IProductRepository {
@@ -8,7 +8,7 @@ export interface IProductRepository {
   getProductPrice(name: string): Promise<number | null>;
   getProducts(): Promise<ProductAttributes[] | null>;
   createProduct(body: Optional<ProductAttributes, "id">): Promise<ProductAttributes | null>;
-  updateProductById(id: number,body: Partial<ProductAttributes>): Promise<ProductAttributes | null>;
+  updateProductById(id: number, body: Partial<ProductAttributes>): Promise<ProductAttributes | null>;
   deleteProductById(id: number): void;
 }
 

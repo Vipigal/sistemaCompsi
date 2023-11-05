@@ -23,6 +23,6 @@ const orderService = {
         await OrderRepository.createOrder(body, email);
         return ("Pedido criado com sucesso");
     },
-}
+};
 
 export default orderService;
