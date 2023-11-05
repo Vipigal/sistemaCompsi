@@ -1,4 +1,7 @@
-export type UserType = "ALUNO" | "ADMIN" | "GERENCIAL";
+export type Role = "ALUNO" | "ADMIN" | "GERENCIAL";
+
+import { TicketAttributes } from "./Ticket";
+import { PostAttributes } from "./Post";
 
 export interface UserAttributes {
   id: number;
@@ -7,6 +10,6 @@ export interface UserAttributes {
   password: string;
   contactNumber: string;
 	profilePicUrl: string | null;
-  userType: UserType;
+  userType: Role;
   description: string | null;
 }

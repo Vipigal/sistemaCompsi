@@ -5,6 +5,5 @@ export interface PostAttributes {
   title: string;
   content: string | null;
   published: boolean;
- // author : UserAttributes;
-  authorId: number;
+  authorEmail: string | null;
 }
