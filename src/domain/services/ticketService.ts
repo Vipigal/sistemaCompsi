@@ -11,7 +11,7 @@ const ticketService = {
 
     if (existingTicket) throw new Error("email em uso");
 
-    if (!statusType.includes(statusType))
+    if (!["NOVO", "TRANSFERIDO", "RESPONDIDO", "ESPERA ", "RESOLVIDO"].includes(statusType))
       throw new Error("tipo de status invalido");
 
     await TicketRepository.createTicket(body);
