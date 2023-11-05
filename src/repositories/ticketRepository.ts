@@ -1,15 +1,12 @@
 
 import prisma from "../config/dbConfig";
-import { TicketAttributes } from "../domain/services/ticketService";
+import { TicketAttributes } from "../domain/models/Ticket";
 import { Optional } from "../utils/option";
 
 export interface ITicketRepository {
-  getTicketByEmail(email: string): Promise<TicketAttributes | null>;
   getTicketById(id: number): Promise<TicketAttributes | null>;
   getTickets(): Promise<TicketAttributes[] | null>;
-  createTicket(
-    body: Optional<TicketAttributes, "id">
-  ): Promise<TicketAttributes | null>;
+  createTicket( body: TicketAttributes): Promise<TicketAttributes | null>;
   updateTicketById(
     id: number,
     body: Partial<TicketAttributes>
@@ -19,16 +16,6 @@ export interface ITicketRepository {
 
 
 export const TicketRepository: ITicketRepository = {
-  async getTicketByEmail(email: string): Promise<TicketAttributes | null> {
-    try {
-      const ticket = await prisma.ticket.findFirst({ where: { email: email } });
-      if (ticket) return ticket as TicketAttributes;
-      else return null;
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  },
 
   async getTicketById(id: number): Promise<TicketAttributes | null> {
     try {
@@ -51,9 +38,8 @@ export const TicketRepository: ITicketRepository = {
       return null;
     }
   },
-  createTicket: async (body: Optional<TicketAttributes, "id">) => {
+  createTicket: async (body) => {
     try {
-
       const newTicket = await prisma.ticket.create({
         data: body,
       });
@@ -67,10 +53,6 @@ export const TicketRepository: ITicketRepository = {
 
   updateTicketById: async (id: number, body: Partial<TicketAttributes>) => {
     try {
-      if (body.password) {
-        body.password = await hashPassword(body.password);
-      }
-
       const updatedTicket = await prisma.ticket.update({
         where: {
           id: id,
