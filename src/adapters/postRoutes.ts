@@ -59,7 +59,7 @@ router.post("/", auth, upload.single("Foto"), async (req: Request, res: Response
 });
 
 router.delete("/:ID", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
-  const product = await postService.deletePostByID(parseInt(req.params.ID));
+  const post = await postService.deletePostByID(parseInt(req.params.ID));
   res.status(200).send("Produto removido com sucesso");
 });
 
