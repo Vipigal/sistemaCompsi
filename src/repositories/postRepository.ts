@@ -7,6 +7,7 @@ export interface IPostRepository {
   createPost(body: Optional<PostAttributes, "id">, email: string): Promise<PostAttributes | null>;
   getPostById(id: number): Promise<PostAttributes | null>;
   getAllPosts(type: PostType | null): Promise<PostAttributes[] | null>;
+  deletePostByID(id: number): void;
 }
 
 export const PostRepository: IPostRepository = {
@@ -51,6 +52,18 @@ export const PostRepository: IPostRepository = {
       if (post) return post as PostAttributes[];
       else return null;
     } catch (error) {
+      console.log(error);
+      return null;
+    }
+  },
+  deletePostByID: async (id: number) => {
+    try {
+      await prisma.post.delete({
+        where: {
+          id: id,
+        },
+      });
+    } catch (error: unknown) {
       console.log(error);
       return null;
     }

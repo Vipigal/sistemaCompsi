@@ -44,6 +44,14 @@ const postService = {
       // offset: (page - 1) * limit, // Calcula o offset a partir da página
     return users;
   },
+  async deletePostByID(id: number) {
+    try {
+      await PostRepository.deletePostByID(id);
+      return "Post deletado";
+    } catch (error: unknown) {
+      return "Erro ao deletar post";
+    }
+  },
 };
 
 export default postService;

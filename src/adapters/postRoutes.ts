@@ -14,29 +14,30 @@ import { statusCodes } from "../utils/statusCodes";
 
 const router = express.Router();
 
-router.get("/:ID", async (req: Request, res: Response) => {
-  try {
-    const post = await postService.getPostById(parseInt(req.params.ID));
-    res.status(200).json(post);
-  } catch (err: unknown) {
-    const error = TrataErrorUtil(err);
-    res.status(error.status).json(error.message);
-  }
-});
-
-router.get("/:type", async (req: Request, res: Response) => {
-  try {
-    const post = await postService.listPosts(req.params.type , 1, 100);
-    res.status(200).json(post);
-  } catch (err: unknown) {
-    const error = TrataErrorUtil(err);
-    res.status(error.status).json(error.message);
-  }
-});
-
 router.get("/", async (req: Request, res: Response) => {
   try {
     const post = await postService.listPosts(null , 1, 100);
+    res.status(200).json(post);
+  } catch (err: unknown) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
+router.get("/type/:TYPE", async (req: Request, res: Response) => {
+  try {
+    console.log(req.params.TYPE)
+    const post = await postService.listPosts(req.params.TYPE , 1, 100);
+    res.status(200).json(post);
+  } catch (err: unknown) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
+router.get("/:ID", async (req: Request, res: Response) => {
+  try {
+    const post = await postService.getPostById(parseInt(req.params.ID));
     res.status(200).json(post);
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);
@@ -58,13 +59,8 @@ router.post("/", auth, upload.single("Foto"), async (req: Request, res: Response
 });
 
 router.delete("/:ID", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
-  try {
-
-    res.status(200).json("Post apagado com sucesso");
-  } catch (err) {
-    const error = TrataErrorUtil(err);
-    res.status(error.status).json(error.message);
-  }
+  const product = await postService.deletePostByID(parseInt(req.params.ID));
+  res.status(200).send("Produto removido com sucesso");
 });
 
 export default router;
