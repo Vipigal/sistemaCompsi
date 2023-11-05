@@ -27,12 +27,19 @@ router.get("/validateToken", async (req: Request, res: Response) => {
   }
 });
 
+router.get("/myAccount", auth, async (req: Request, res: Response) => {
+  try {
+    console.log(req.user?.Email);
+    const user = await userService.getUserByEmail(req.user?.Email);
+    res.status(200).json(user);
+  } catch (err: unknown) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
 //Retorna todos os usuarios cadastrados no sistema.
-router.get(
-  "/",
-  auth,
-  checkRole(["ADMIN", "GERENCIAL"]),
-  async (req: Request, res: Response) => {
+router.get("/", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
     try {
       const users = await userService.listUsers(100, 1);
       res.status(200).json(users);
@@ -45,7 +52,7 @@ router.get(
 
 router.get("/:ID", async (req: Request, res: Response) => {
   try {
-    const user = userService.getUserById(parseInt(req.params.ID));
+    const user = await userService.getUserById(parseInt(req.params.ID));
     res.status(200).json(user);
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);
