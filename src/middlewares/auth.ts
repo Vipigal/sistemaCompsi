@@ -9,6 +9,7 @@ function generateJWT(user: UserAttributes, res: Response) {
   const body = {
     Email: user.email,
     userType: user.userType,
+    Name: user.name,
   };
 
   if (!process.env.SECRET_KEY)
@@ -20,6 +21,7 @@ function generateJWT(user: UserAttributes, res: Response) {
   res.cookie("jwt", token, {
     httpOnly: true,
   });
+  return token;
 }
 
 export async function login(req: Request, res: Response, next: NextFunction) {
@@ -27,23 +29,23 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     if (typeof req.body === "string") req.body = JSON.parse(req.body);
 
     const user = await UserRepository.getUserByEmail(req.body.email);
-    console.log(req.body.senha, user?.password);
 
     if (!user) throw new Error("Usuário e/ou senha incorreta!");
 
-    const rightPassword = await compare(req.body.password, user.password);
+    const rightPassword = await compare(req.body.senha, user.password);
 
     if (!rightPassword) throw new Error("Usuário e/ou senha incorreta!");
 
-    generateJWT(user, res);
-    res.status(statusCodes.SUCCESS);
+    const token = generateJWT(user, res);
+    res.status(statusCodes.SUCCESS).json(token);
     next();
   } catch (err) {
+    res.status(404).json(err);
     next(err);
   }
 }
 
-function extractCookie(req: Request) {
+export function extractCookie(req: Request) {
   if (req && req.cookies) {
     const token = req.cookies["jwt"];
     return token;

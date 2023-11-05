@@ -5,17 +5,26 @@ import {
   auth,
   checkIfLoggedIn,
   checkRole,
+  extractCookie,
   login,
   logout,
 } from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
+import { statusCodes } from "../utils/statusCodes";
 
-router.post("/login", checkIfLoggedIn, login, (req: Request, res: Response) => {
-  res.json("Login bem sucedido!");
-});
+router.post("/login", checkIfLoggedIn, login);
 
 router.post("/logout", logout, (req: Request, res: Response) => {
   res.json("Logout bem sucedido!");
+});
+
+router.get("/validateToken", async (req: Request, res: Response) => {
+  const token = extractCookie(req);
+  if (token) {
+    res.status(statusCodes.SUCCESS).json(token);
+  } else {
+    res.status(statusCodes.NOT_FOUND).json(`nenhum token encontrado`);
+  }
 });
 
 //Retorna todos os usuarios cadastrados no sistema.

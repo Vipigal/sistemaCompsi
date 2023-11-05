@@ -16,29 +16,30 @@ enum Role {
   GERENCIAL
 }
 
-
 enum Status {
   NOVO
   TRANSFERIDO
   RESPONDIDO
-  EM ESPERA 
+  EM_ESPERA
   RESOLVIDO
- }
-  
+}
+
 enum Category {
   PRODUCT
   EVENT
 }
 
 model User {
-  id            Int     @id @default(autoincrement())
-  email         String  @unique
+  id            Int      @id @default(autoincrement())
+  email         String   @unique
   name          String
   password      String
   contactNumber String
-  userType      Role    @default(ALUNO)
+	profilePicUrl String?
+  userType      Role     @default(ALUNO)
   description   String?
   posts         Post[]
+  Ticket        Ticket[]
 }
 
 model Post {
@@ -50,22 +51,20 @@ model Post {
   authorId  Int
 }
 
-
 model Ticket {
-  id        Int     @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   title     String
   content   String
-  situation    Status @default(NOVO)
-  author    User    @relation(fields: [authorId], references: [id])
+  situation Status @default(NOVO)
+  author    User   @relation(fields: [authorId], references: [id])
   authorId  Int
 }
 
 model Product {
-  id        Int     @id @default(autoincrement())
-  name     String
-  description   String?
-  price  Float
-  image    String?
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  image       String?
   productType Category @default(PRODUCT)
 }
-
