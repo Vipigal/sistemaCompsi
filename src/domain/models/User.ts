@@ -6,6 +6,7 @@ export interface UserAttributes {
   email: string;
   password: string;
   contactNumber: string;
+	profilePicUrl: string | null;
   userType: UserType;
   description: string | null;
 }

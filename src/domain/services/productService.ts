@@ -1,15 +1,7 @@
-import { ProductRepository } from "../repositories/productRepository";
+import { ProductRepository } from "../../repositories/productRepository";
+import { ProductAttributes } from "../models/Product";
 
-export type ProductType = "PRODUCT" | "EVENT";
 
-export interface ProductAttributes {
-  id: number;
-  name: string;
-  description: string | null;
-  price: number;
-  image: string | null;
-  productType: ProductType;
-}
 
 const productService = {
   async createProduct(body: ProductAttributes) {

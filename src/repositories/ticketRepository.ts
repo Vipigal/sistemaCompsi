@@ -1,6 +1,6 @@
 
 import prisma from "../config/dbConfig";
-import { TicketAttributes } from "../domain/ticketService";
+import { TicketAttributes } from "../domain/services/ticketService";
 import { Optional } from "../utils/option";
 
 export interface ITicketRepository {

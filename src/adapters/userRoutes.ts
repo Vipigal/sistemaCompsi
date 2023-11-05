@@ -20,7 +20,6 @@ router.post("/logout", logout, (req: Request, res: Response) => {
 
 router.get("/validateToken", async (req: Request, res: Response) => {
   const token = extractCookie(req);
-  console.log(token);
   if (token) {
     res.status(statusCodes.SUCCESS).json(token);
   } else {

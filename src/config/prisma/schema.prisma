@@ -35,6 +35,7 @@ model User {
   name          String
   password      String
   contactNumber String
+	profilePicUrl String?
   userType      Role     @default(ALUNO)
   description   String?
   posts         Post[]

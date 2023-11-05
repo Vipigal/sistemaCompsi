@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
-import productService from "../domain/productService";
+import productService from "../domain/services/productService";
 
 router.post("/", async (req: Request, res: Response) => {
   const product = await productService.createProduct(req.body);

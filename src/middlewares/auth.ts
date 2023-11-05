@@ -29,7 +29,6 @@ export async function login(req: Request, res: Response, next: NextFunction) {
     if (typeof req.body === "string") req.body = JSON.parse(req.body);
 
     const user = await UserRepository.getUserByEmail(req.body.email);
-    console.log(req.body.senha, user?.password);
 
     if (!user) throw new Error("Usuário e/ou senha incorreta!");
 
@@ -48,7 +47,6 @@ export async function login(req: Request, res: Response, next: NextFunction) {
 
 export function extractCookie(req: Request) {
   if (req && req.cookies) {
-    console.log(req.cookies);
     const token = req.cookies["jwt"];
     return token;
   }

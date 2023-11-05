@@ -1,5 +1,5 @@
 import prisma from "../config/dbConfig";
-import { ProductAttributes } from "../domain/productService";
+import { ProductAttributes } from "../domain/models/Product"; 
 import { Optional } from "../utils/option";
 
 export interface IProductRepository {
