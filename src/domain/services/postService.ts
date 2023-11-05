@@ -3,7 +3,7 @@ import { PostAttributes } from "../models/Post";
 import { PostType } from "../models/Post";
 
 function verificarTipoPost(type: string | null): type is PostType{
-  if (type === "SECTION" || type === "BANNER" ||type === "DEFAULT")
+  if (type === "GESTAO" ||type === "TICKET" ||type === "SOBRE" || type === "BANNER" ||type === "DEFAULT")
     return true;
   return false;
 }
