@@ -1,8 +1,18 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import productService from "../domain/services/productService";
+import {
+  auth,
+  checkIfLoggedIn,
+  checkRole,
+  extractCookie,
+  login,
+  logout,
+} from "../middlewares/auth";
+import { TrataErrorUtil } from "../utils/errorHandler";
+import { statusCodes } from "../utils/statusCodes";
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
   const product = await productService.createProduct(req.body);
   res.status(200).send("Produto cadastrado com sucesso");
 });

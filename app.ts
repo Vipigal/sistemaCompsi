@@ -4,6 +4,7 @@ import userRouter from "./src/adapters/userRoutes";
 import productRouter from "./src/adapters/productRoutes";
 import postRouter from "./src/adapters/postRoutes";
 import ticketRouter from "./src/adapters/ticketRoutes";
+import orderRouter from "./src/adapters/orderRoutes";
 
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
@@ -35,6 +36,7 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/ticket", ticketRouter);
+app.use("/api/order", orderRouter);
 
 app.listen(port, () => {
   console.log(`servidor iniciado em http://localhost:${port}`);

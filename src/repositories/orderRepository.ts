@@ -7,13 +7,13 @@ import { OrderAttributes } from "../domain/models/Order";
 import { ProductRepository } from "./productRepository";
 
 export interface IOrderRepository {
-    createOrder(body: Optional<OrderAttributes, "id">, email: string, product: string): Promise<OrderAttributes | null>;
+    createOrder(body: Optional<OrderAttributes, "id">, email: string): Promise<OrderAttributes | null>;
 }
 
 export const OrderRepository: IOrderRepository = {
-    createOrder: async (body: Optional<OrderAttributes, "id">, email: string, product: string) => {
+    createOrder: async (body: Optional<OrderAttributes, "id">, email: string) => {
         try {
-            const price = await ProductRepository.getProductPrice(product);
+            const price = await ProductRepository.getProductPrice(body.productName);
 
             if (!price) {
                 return null;
@@ -24,7 +24,7 @@ export const OrderRepository: IOrderRepository = {
                     type: body.type,
                     status: body.status,
                     userEmail: email,
-                    productName: product,
+                    productName: body.productName,
                     productPrice: price,
                     amount: body.amount,
                     fee: body.fee,

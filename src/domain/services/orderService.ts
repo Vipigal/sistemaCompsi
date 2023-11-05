@@ -4,14 +4,13 @@ import { OrderType } from "../models/Order";
 import { OrderStatus } from "../models/Order";
 
 const orderService = {
-    createOrder: async (body: OrderAttributes, email: string | undefined, product: string | undefined) => {
+    createOrder: async (body: OrderAttributes, email: string | undefined) => {
         if(!email)
             throw new Error("Usuário não logado");
 
-        if(!product)
-            throw new Error("Produto inválido");
-
-    await OrderRepository.createOrder(body, email, product);
-    return ("Pedido criado");
+    await OrderRepository.createOrder(body, email);
+    return ("Pedido criado com sucesso");
     },
 }
+
+export default orderService;
