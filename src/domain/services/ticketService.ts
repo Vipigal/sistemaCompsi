@@ -1,22 +1,17 @@
-import { stat } from "fs";
+/* eslint-disable semi */
 import { TicketRepository } from "../../repositories/ticketRepository";
 import { TicketAttributes } from "../models/Ticket";
-import { Status } from "../models/Ticket";
-
 
 const ticketService = {
   async createTicket(body: TicketAttributes, email: string | undefined) {
-    const {id, status} = body;
+    const { id, status } = body;
     const existingTicket = await TicketRepository.getTicketById(id);
 
     if (existingTicket) throw new Error("email em uso");
 
+    if (!status.includes(status)) throw new Error("tipo de status invalido");
 
-    if (!status.includes(status))
-      throw new Error("tipo de status invalido");
-
-    if (!email)
-      throw new Error("Usuario nao logado")
+    if (!email) throw new Error("Usuario nao logado");
 
     await TicketRepository.createTicket(body, email);
     return "Usuario criado";
@@ -49,10 +44,9 @@ const ticketService = {
   },
 
   updateTicketById(id: number, body: Partial<TicketAttributes>) {
-    try{
-        TicketRepository.updateTicketById(id, body);
-    }
-    catch(err) {
+    try {
+      TicketRepository.updateTicketById(id, body);
+    } catch (err) {
       throw new Error("Você não tem permissão para fazer isso");
     }
   },
