@@ -5,7 +5,7 @@ import { Status } from "../models/Ticket";
 
 
 const ticketService = {
-  async createTicket(body: TicketAttributes, email: string) {
+  async createTicket(body: TicketAttributes, email: string | undefined) {
     const {id, status} = body;
     const existingTicket = await TicketRepository.getTicketById(id);
 
@@ -13,8 +13,10 @@ const ticketService = {
 
 
     if (!status.includes(status))
-
       throw new Error("tipo de status invalido");
+
+    if (!email)
+      throw new Error("Usuario nao logado")
 
     await TicketRepository.createTicket(body, email);
     return "Usuario criado";

@@ -1,5 +1,3 @@
-import { UserAttributes } from "./User";
-
 export type Status = "NOVO" | "TRANSFERIDO" | "RESPONDIDO" | "ESPERA" | "RESOLVIDO";
 
 export interface TicketAttributes {

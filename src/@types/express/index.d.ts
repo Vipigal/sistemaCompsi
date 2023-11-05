@@ -1,7 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 interface PaylodParams {
-  email: string;
+  Email: string;
   userType: "ADMIN" | "GERENCIAL" | "ALUNO";
+  Name: string;
 }
 
 namespace Express {

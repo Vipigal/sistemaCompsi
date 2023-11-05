@@ -1,9 +1,16 @@
 import express, { Request, Response } from "express";
 const router = express.Router();
 import ticketService from "../domain/services/ticketService";
-
+import {
+  auth,
+  checkIfLoggedIn,
+  checkRole,
+  extractCookie,
+  login,
+  logout,
+} from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
-
+import { statusCodes } from "../utils/statusCodes";
 
 router.get("/:ID", async (req: Request, res: Response) => {
   try {
@@ -15,9 +22,9 @@ router.get("/:ID", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", async (req: Request, res: Response) => {
+router.post("/", auth, async (req: Request, res: Response) => {
   try {
-    await ticketService.createTicket(req.body, "MUDAR!!!!!!!");
+    await ticketService.createTicket(req.body, req.user?.Email);
     res.status(200).json("Usuário criado com sucesso!");
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);

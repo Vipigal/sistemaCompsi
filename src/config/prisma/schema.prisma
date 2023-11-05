@@ -29,6 +29,12 @@ enum Category {
   EVENT
 }
 
+enum PostType {
+  BANNER
+  SECTION
+  DEFAULT
+}
+
 model User {
   id            Int      @id @default(autoincrement())
   email         String   @unique
@@ -40,16 +46,19 @@ model User {
   description   String?
   posts         Post[]
   tickets       Ticket[]
+  order         Order[]
 }
 
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
+  subtitle String?
   imageURL   String?
   description String?
   published Boolean @default(false)
   author    User?    @relation(fields: [authorEmail], references: [email])
   authorEmail    String?
+  type PostType @default(DEFAULT)
 }
 
 model Ticket {
@@ -63,9 +72,18 @@ model Ticket {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  name        String
+  name        String   @unique
   description String?
   price       Float
   image       String?
   productType Category @default(PRODUCT)
+  order       Order[]
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userEmail], references: [email])
+  userEmail String
+  product Product @relation(fields: [productName], references: [name])
+  productName String
 }
