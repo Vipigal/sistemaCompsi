@@ -15,9 +15,8 @@ export const OrderRepository: IOrderRepository = {
         try {
             const price = await ProductRepository.getProductPrice(body.productName);
 
-            if (!price) {
+            if (!price)
                 return null;
-            }
 
             const newOrder = await prisma.order.create({
                 data: {

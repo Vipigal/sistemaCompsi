@@ -11,6 +11,6 @@ export interface OrderAttributes {
   productName: string;
   productPrice: number;
 
-  amount: number | null;
+  amount: number;
   fee: number;
 }

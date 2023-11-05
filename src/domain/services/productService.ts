@@ -23,6 +23,10 @@ const productService = {
 
   async deleteProductById(id: number) {
     try {
+      const product = await ProductRepository.getProductById(id);
+      if (!product) {
+        throw new Error("Produto não existente");
+      }
       await ProductRepository.deleteProductById(id);
       return "Produto deletado";
     } catch (error: unknown) {

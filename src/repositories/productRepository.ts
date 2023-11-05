@@ -36,7 +36,7 @@ export const ProductRepository: IProductRepository = {
   getProductPrice: async (name: string) => {
     try {
       const product = await prisma.product.findFirst({ where: { name: name } });
-      if (product) return product.price;
+      if (product && product.price) return product.price;
       else return null;
     } catch (error: unknown) {
       console.log(error);

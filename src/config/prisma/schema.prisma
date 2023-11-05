@@ -105,6 +105,6 @@ model Order {
   productName String
   productPrice Float 
 
-  amount Int?
+  amount Int
   fee Float @default(0)
 }

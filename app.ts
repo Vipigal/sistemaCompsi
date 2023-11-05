@@ -36,7 +36,7 @@ app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
 app.use("/api/ticket", ticketRouter);
-app.use("/api/order", orderRouter);
+app.use("/api/orders", orderRouter);
 
 app.listen(port, () => {
   console.log(`servidor iniciado em http://localhost:${port}`);
