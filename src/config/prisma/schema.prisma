@@ -40,11 +40,13 @@ model User {
   description   String?
   posts         Post[]
   tickets       Ticket[]
+  order         Order[]
 }
 
 model Post {
   id        Int     @id @default(autoincrement())
   title     String
+  subtitle String?
   imageURL   String?
   description String?
   published Boolean @default(false)
@@ -63,9 +65,18 @@ model Ticket {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  name        String
+  name        String   @unique
   description String?
   price       Float
   image       String?
   productType Category @default(PRODUCT)
+  order       Order[]
+}
+
+model Order {
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userEmail], references: [email])
+  userEmail String
+  product Product @relation(fields: [productName], references: [name])
+  productName String
 }

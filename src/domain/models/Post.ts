@@ -1,8 +1,7 @@
-import { UserAttributes } from "./User";
-
 export interface PostAttributes {
   id: number;
   title: string;
+  subtitle: string | null;
   imageURL: string | null;
   description: string | null;
   published: boolean;

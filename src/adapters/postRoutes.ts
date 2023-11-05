@@ -1,7 +1,16 @@
 import express, { Request, Response } from "express";
 import postService from "../domain/services/postService";
-import { TrataErrorUtil } from "../utils/errorHandler";
 import { upload } from "../config/s3Config";
+import {
+  auth,
+  checkIfLoggedIn,
+  checkRole,
+  extractCookie,
+  login,
+  logout,
+} from "../middlewares/auth";
+import { TrataErrorUtil } from "../utils/errorHandler";
+import { statusCodes } from "../utils/statusCodes";
 
 const router = express.Router();
 
@@ -25,12 +34,12 @@ router.get("/", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", upload.single("Foto"), async (req: Request, res: Response) => {
+router.post("/", auth, upload.single("Foto"), async (req: Request, res: Response) => {
   try {
     if (req.file) {
       req.body.content = (req.file as Express.MulterS3.File).location;
     } else req.body.content = null;
-    await postService.createPost(req.body, "MUDAR!!!!!!!");
+    await postService.createPost(req.body, req.user?.email);
     res.status(200).json("Post criado com sucesso");
   } catch (err) {
     const error = TrataErrorUtil(err);

@@ -2,11 +2,14 @@ import { PostRepository } from "../../repositories/postRepository";
 import { PostAttributes } from "../models/Post";
 
 const postService = {
-  createPost: async (body: PostAttributes, email: string) => {
-    if (!body.title || !body.content) {
-      throw new Error("O título e o conteúdo são obrigatórios.");
+  createPost: async (body: PostAttributes, email: string | undefined) => {
+    if (!body.title) {
+      throw new Error("O título é obrigatório.");
     }
     body.published = true;
+    if (!email) {
+      throw new Error("Usuário não logado")
+    }
     await PostRepository.createPost(body, email);
     return "Post criado";
   },
