@@ -20,7 +20,7 @@ enum Status {
   NOVO
   TRANSFERIDO
   RESPONDIDO
-  EM_ESPERA
+  ESPERA
   RESOLVIDO
 }
 
@@ -55,7 +55,7 @@ model Ticket {
   id        Int    @id @default(autoincrement())
   title     String
   content   String
-  situation Status @default(NOVO)
+  statusType Status @default(NOVO)
   author    User   @relation(fields: [authorId], references: [id])
   authorId  Int
 }
