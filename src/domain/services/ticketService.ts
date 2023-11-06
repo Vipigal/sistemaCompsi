@@ -1,5 +1,6 @@
 import { TicketRepository } from "../../repositories/ticketRepository";
 import { TicketAttributes } from "../models/Ticket";
+import { UserRepository } from "../../repositories/userRepository";
 
 const ticketService = {
   async createTicket(body: TicketAttributes, email: string | undefined) {
@@ -28,11 +29,7 @@ const ticketService = {
       throw new Error("O número da página deve ser maior ou igual a 1.");
     }
 
-    const tickets = await TicketRepository
-      .getTickets
-      // limit,
-      // offset: (page - 1) * limit, // Calcula o offset a partir da página
-      ();
+    const tickets = await TicketRepository.getTickets();
     return tickets;
   },
 
@@ -54,6 +51,20 @@ const ticketService = {
     return "Ticket atualizado com sucesso";
 
   },
+
+  async myTickets(email: string | undefined) {
+    if(!email)
+    throw new Error("Usuário não existente");
+
+    const user = UserRepository.getUserByEmail(email);
+
+    if (!user)
+      throw new Error("Usuário não existente");
+    
+    const tickets = await TicketRepository.myTickets(email);
+    if (tickets) return tickets;
+    else throw new Error("Erro ao obter tickets do usuário");
+  }
 };
 
 export default ticketService;

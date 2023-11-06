@@ -5,6 +5,16 @@ import { TrataErrorUtil } from "../utils/errorHandler";
 
 const router = express.Router();
 
+router.get("/myTickets", auth, async (req: Request, res: Response) => {
+  try{
+    const ticket = await ticketService.myTickets(req.user?.Email);
+    res.status(200).json(ticket);
+  } catch (err: unknown) {
+    const error = TrataErrorUtil(err);
+    res.status(error.status).json(error.message);
+  }
+});
+
 router.get("/:ID", async (req: Request, res: Response) => {
   try {
     const ticket = ticketService.getTicketById(parseInt(req.params.ID));

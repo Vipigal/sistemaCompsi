@@ -4,6 +4,7 @@ import { TicketAttributes } from "../domain/models/Ticket";
 export interface ITicketRepository {
   getTicketById(id: number): Promise<TicketAttributes | null>;
   getTickets(): Promise<TicketAttributes[] | null>;
+  myTickets(email: string | undefined): Promise<TicketAttributes[] | null>;
   createTicket(
     body: TicketAttributes,
     email: string
@@ -30,6 +31,16 @@ export const TicketRepository: ITicketRepository = {
   getTickets: async () => {
     try {
       const tickets = await prisma.ticket.findMany();
+      if (tickets) return tickets as TicketAttributes[];
+      else return null;
+    } catch (error: unknown) {
+      console.log(error);
+      return null;
+    }
+  },
+  myTickets: async (email: string | undefined) => {
+    try {
+      const tickets = await prisma.ticket.findMany({ where: { authorEmail: email } });
       if (tickets) return tickets as TicketAttributes[];
       else return null;
     } catch (error: unknown) {
