@@ -7,7 +7,6 @@ export interface PostAttributes {
   subtitle: string | null;
   imageURL: string | null;
   description: string | null;
-  published: boolean;
   authorEmail: string | null;
   type: PostType;
   createdAt: Date;

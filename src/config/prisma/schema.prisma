@@ -69,7 +69,6 @@ model Post {
   subtitle    String?
   imageURL    String?
   description String?
-  published   Boolean  @default(false)
   author      User?    @relation(fields: [authorEmail], references: [email])
   authorEmail String?
   type        PostType @default(DEFAULT)

@@ -13,7 +13,6 @@ const postService = {
     if (!body.title) {
       throw new Error("O título é obrigatório.");
     }
-    body.published = true;
     if (!email) {
       throw new Error("Usuário não logado");
     }
