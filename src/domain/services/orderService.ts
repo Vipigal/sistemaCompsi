@@ -1,4 +1,5 @@
 import { OrderRepository } from "../../repositories/orderRepository";
+import { UserRepository } from "../../repositories/userRepository";
 import { OrderAttributes } from "../models/Order";
 import productService from "./productService";
 import userService from "./userService";
@@ -6,6 +7,9 @@ import userService from "./userService";
 const orderService = {
   createOrder: async (body: OrderAttributes, email: string | undefined) => {
     if (!email) throw new Error("Usuário não logado");
+
+    const user = UserRepository.getUserByEmail(email);
+    if(!user) throw new Error("Usuário não logado");
 
     const product = await productService.getProductByName(body.productName);
 
@@ -33,21 +37,22 @@ const orderService = {
 
   async listOrdersByProduct(productName: string): Promise<OrderAttributes[] | null>{
     if(!await productService.getProductByName(productName))
-    throw new Error("Produto Não encontrado")
+    throw new Error("Produto Não encontrado");
     const orders = await OrderRepository.listOrdersByProduct(productName); 
     return orders; 
   },
 
   async listOrdersByUser(email: string): Promise<OrderAttributes[] | null>{
     if(!await userService.getUserByEmail(email))
-    throw new Error("Usuário Não encontrado")
+    throw new Error("Usuário Não encontrado");
     const orders = await OrderRepository.listOrdersByUser(email); 
     return orders; 
   },
 
 async getOrderByID(id: number): Promise<OrderAttributes | null>{
   const orders = await OrderRepository.getOrderByID(id); 
-  return orders;
+  if (orders) return orders;
+  else throw new Error("Pedido não encontrado");
 },
 
 async deleteOrderByID(id: number): Promise<void>{
