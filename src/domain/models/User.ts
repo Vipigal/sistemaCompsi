@@ -9,4 +9,5 @@ export interface UserAttributes {
 	profilePicUrl: string | null;
   userType: Role;
   description: string | null;
+  createdAt: Date;
 }

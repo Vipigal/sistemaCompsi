@@ -54,33 +54,36 @@ model User {
   name          String
   password      String
   contactNumber String
-	profilePicUrl String?
+  profilePicUrl String?
   userType      Role     @default(ALUNO)
   description   String?
   posts         Post[]
   tickets       Ticket[]
   order         Order[]
+  createdAt     DateTime @default(now())
 }
 
 model Post {
-  id        Int     @id @default(autoincrement())
-  title     String
-  subtitle String?
-  imageURL   String?
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  imageURL    String?
   description String?
-  published Boolean @default(false)
-  author    User?    @relation(fields: [authorEmail], references: [email])
-  authorEmail    String?
-  type PostType @default(DEFAULT)
+  published   Boolean  @default(false)
+  author      User?    @relation(fields: [authorEmail], references: [email])
+  authorEmail String?
+  type        PostType @default(DEFAULT)
+  createdAt   DateTime @default(now())
 }
 
 model Ticket {
-  id        Int    @id @default(autoincrement())
-  title     String
-  content   String
-  status    Status @default(NOVO)
-  author    User?    @relation(fields: [authorEmail], references: [email])
-  authorEmail    String?
+  id          Int      @id @default(autoincrement())
+  title       String
+  content     String
+  status      Status   @default(NOVO)
+  author      User?    @relation(fields: [authorEmail], references: [email])
+  authorEmail String?
+  createdAt   DateTime @default(now())
 }
 
 model Product {
@@ -91,20 +94,22 @@ model Product {
   image       String?
   productType Category @default(PRODUCT)
   order       Order[]
+  createdAt   DateTime @default(now())
 }
 
 model Order {
-  id Int @id @default(autoincrement())
-  type OrderType @default(WISH)
-  status OrderStatus? 
+  id     Int          @id @default(autoincrement())
+  type   OrderType    @default(WISH)
+  status OrderStatus?
 
-  user User @relation(fields: [userEmail], references: [email])
+  user      User   @relation(fields: [userEmail], references: [email])
   userEmail String
 
-  product Product @relation(fields: [productName], references: [name])
-  productName String
-  productPrice Float 
+  product      Product @relation(fields: [productName], references: [name])
+  productName  String
+  productPrice Float
 
-  amount Int
-  fee Float @default(0)
+  amount    Int
+  fee       Float    @default(0)
+  createdAt DateTime @default(now())
 }

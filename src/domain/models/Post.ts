@@ -10,4 +10,5 @@ export interface PostAttributes {
   published: boolean;
   authorEmail: string | null;
   type: PostType;
+  createdAt: Date;
 }

@@ -52,6 +52,14 @@ const postService = {
       return "Erro ao deletar post";
     }
   },
+  async updatePostByID(id: number, body: Partial<PostAttributes>){
+    if(!id)
+      throw new Error("Post não existente");
+
+    const post = await PostRepository.updatePostByID(id, body);
+    if (post) return post;
+    else throw new Error("Erro ao atualizar post");
+  },
 };
 
 export default postService;

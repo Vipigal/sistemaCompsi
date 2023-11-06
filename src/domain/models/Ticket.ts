@@ -6,4 +6,5 @@ export interface TicketAttributes {
   content: string;
   status: Status;
   authorEmail: string | null;
+  createdAt: Date;
 }
