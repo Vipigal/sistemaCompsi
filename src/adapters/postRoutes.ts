@@ -44,8 +44,8 @@ router.post(
   async (req: Request, res: Response) => {
     try {
       if (req.file) {
-        req.body.content = (req.file as Express.MulterS3.File).location;
-      } else req.body.content = null;
+        req.body.imageURL = (req.file as Express.MulterS3.File).location;
+      } else req.body.imageURL = null;
       await postService.createPost(req.body, req.user?.Email);
       res.status(200).json("Post criado com sucesso");
     } catch (err) {

@@ -7,4 +7,5 @@ export interface ProductAttributes {
   price: number;
   image: string | null;
   productType: ProductType;
+  amount: number;
 }

@@ -1,7 +1,10 @@
 import { ProductRepository } from "../../repositories/productRepository";
-import { ProductAttributes } from "../models/Product";
+import { ProductAttributes, ProductType } from "../models/Product";
 
-
+function verificarTipoProduct(type: string | null): type is ProductType {
+  if (type === "EVENT" || type === "PRODUCT") return true;
+  return false;
+}
 
 const productService = {
   async createProduct(body: ProductAttributes) {
@@ -11,6 +14,14 @@ const productService = {
 
       if (existingProduct) {
         return "Este nome já está em uso.";
+      }
+
+      if (body.amount < 0) {
+        throw new Error("A quantidade do produto deve ser positiva!");
+      }
+
+      if (body.price < 0) {
+        throw new Error("O preco do produto deve ser positivo!");
       }
 
       await ProductRepository.createProduct(body);
@@ -27,7 +38,7 @@ const productService = {
       if (!product) {
         throw new Error("Produto não existente");
       }
-      await ProductRepository.deleteProductById(id);
+      ProductRepository.deleteProductById(id);
       return "Produto deletado";
     } catch (error: unknown) {
       return "Erro ao deletar produto";
@@ -43,7 +54,14 @@ const productService = {
       throw new Error("Erro ao buscar produto");
     }
   },
-
+  async getProductByType(type: string) {
+    if (!verificarTipoProduct(type)) {
+      throw new Error("Tipo do produto inválido");
+    }
+    const productsByType = await ProductRepository.getProductsByType(type);
+    if (productsByType && productsByType.length) return productsByType;
+    else throw new Error("Nenhum produto com esse tipo cadastrado");
+  },
   async getProductById(id: number) {
     try {
       const product = await ProductRepository.getProductById(id);
