@@ -1,25 +1,18 @@
-import { stat } from "fs";
 import { TicketRepository } from "../../repositories/ticketRepository";
 import { TicketAttributes } from "../models/Ticket";
-import { Status } from "../models/Ticket";
-
 
 const ticketService = {
   async createTicket(body: TicketAttributes, email: string | undefined) {
-    const {id, status} = body;
-    const existingTicket = await TicketRepository.getTicketById(id);
+    const { status } = body;
 
-    if (existingTicket) throw new Error("email em uso");
-
-
-    if (!status.includes(status))
-      throw new Error("tipo de status invalido");
+    if (body.status && !["NOVO", "TRANSFERIDO", "RESPONDIDO", "ESPERA", "RESOLVIDO"].includes(status))
+      throw new Error("Tipo de status invalido");
 
     if (!email)
-      throw new Error("Usuario nao logado")
+      throw new Error("Usuário nao logado");
 
     await TicketRepository.createTicket(body, email);
-    return "Usuario criado";
+    return "Ticket criado";
   },
 
   async deleteTicketById(id: number) {
@@ -49,12 +42,17 @@ const ticketService = {
   },
 
   updateTicketById(id: number, body: Partial<TicketAttributes>) {
-    try{
-        TicketRepository.updateTicketById(id, body);
-    }
-    catch(err) {
-      throw new Error("Você não tem permissão para fazer isso");
-    }
+    const { status } = body;
+    if (status && !["NOVO", "TRANSFERIDO", "RESPONDIDO", "ESPERA", "RESOLVIDO"].includes(status))
+      throw new Error("Tipo de status invalido");
+
+    const ticket = TicketRepository.getTicketById(id);
+    if (!ticket)
+      throw new Error("Ticket não existente");
+
+    TicketRepository.updateTicketById(id, body);
+    return "Ticket atualizado com sucesso";
+
   },
 };
 

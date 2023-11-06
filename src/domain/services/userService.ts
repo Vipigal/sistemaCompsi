@@ -59,6 +59,7 @@ const userService = {
   updateUserById(id: number, body: Partial<UserAttributes>) {
     if (isUpdateAllowed(body.userType)) {
       UserRepository.updateUserById(id, body);
+      return ("Usuário atualizado com sucesso");
     } else {
       throw new Error("Você não tem permissão para fazer isso");
     }

@@ -44,12 +44,9 @@ const postService = {
     return users;
   },
   async deletePostByID(id: number) {
-    try {
       await PostRepository.deletePostByID(id);
-      return "Post deletado";
-    } catch (error: unknown) {
-      return "Erro ao deletar post";
-    }
+      throw new Error("Post deletado");
+
   },
   async updatePostByID(id: number, body: Partial<PostAttributes>){
     if(!id)

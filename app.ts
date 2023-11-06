@@ -35,7 +35,7 @@ app.use(cookieParser());
 app.use("/api/products", productRouter);
 app.use("/api/users", userRouter);
 app.use("/api/posts", postRouter);
-app.use("/api/ticket", ticketRouter);
+app.use("/api/tickets", ticketRouter);
 app.use("/api/orders", orderRouter);
 
 app.listen(port, () => {

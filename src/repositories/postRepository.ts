@@ -19,7 +19,6 @@ export const PostRepository: IPostRepository = {
           title: body.title,
           imageURL: body.imageURL,
           description: body.description,
-          published: body.published,
           authorEmail: email,
           type: body.type
         },

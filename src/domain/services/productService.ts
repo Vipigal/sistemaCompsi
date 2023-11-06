@@ -1,77 +1,50 @@
 import { ProductRepository } from "../../repositories/productRepository";
 import { ProductAttributes } from "../models/Product";
 
-
-
 const productService = {
   async createProduct(body: ProductAttributes) {
-    try {
-      const { name } = body;
-      const existingProduct = await ProductRepository.getProductByName(name);
+    const { name } = body;
 
-      if (existingProduct) {
-        return "Este nome já está em uso.";
-      }
+    const existingProduct = await ProductRepository.getProductByName(name);
+    if (existingProduct)
+      throw new Error("Este nome já está em uso");
 
-      await ProductRepository.createProduct(body);
-      return "Produto criado";
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error("Erro ao criar porduto");
-    }
+    const product = await ProductRepository.createProduct(body);
+    if (product) return "Produto criado";
+    else throw new Error("Erro ao criar produto");
   },
 
   async deleteProductById(id: number) {
-    try {
-      const product = await ProductRepository.getProductById(id);
-      if (!product) {
-        throw new Error("Produto não existente");
-      }
-      await ProductRepository.deleteProductById(id);
-      return "Produto deletado";
-    } catch (error: unknown) {
-      return "Erro ao deletar produto";
+    const product = await ProductRepository.getProductById(id);
+    if (!product) {
+      throw new Error("Produto não existente");
     }
+    await ProductRepository.deleteProductById(id);
+    return "Produto deletado";
   },
 
   async listProducts() {
-    try {
-      const allProducts = await ProductRepository.getProducts();
-      return allProducts;
-    } catch (e) {
-      console.error(e);
-      throw new Error("Erro ao buscar produto");
-    }
+    const allProducts = await ProductRepository.getProducts();
+    if (allProducts) return allProducts;
+    else throw new Error("Erro ao buscar produto");
   },
 
   async getProductById(id: number) {
-    try {
-      const product = await ProductRepository.getProductById(id);
-      return product;
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error("Erro ao buscar produto");
-    }
+    const product = await ProductRepository.getProductById(id);
+    if (product) return product;
+    else throw new Error("Erro ao buscar produto");
   },
 
   async getProductByName(name: string) {
-    try {
-      const product = await ProductRepository.getProductByName(name);
-      return product;
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error("Erro ao buscar produto");
-    }
+    const product = await ProductRepository.getProductByName(name);
+    if (product) return product;
+    else throw new Error("Erro ao buscar produto");
   },
 
   async updateProductbyId(id: number, body: Partial<ProductAttributes>) {
-    try {
-      await ProductRepository.updateProductById(id, body);
-      return "Produto editado por id";
-    } catch (error: unknown) {
-      console.error(error);
-      throw new Error("Erro ao editar produto");
-    }
+    const product = await ProductRepository.updateProductById(id, body);
+    if (product) return "Produto editado por ID";
+    else throw new Error("Erro ao editar produto");
   },
 };
 
