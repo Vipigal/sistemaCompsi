@@ -8,21 +8,21 @@ function verificarTipoProduct(type: string | null): type is ProductType {
 
 const productService = {
   async createProduct(body: ProductAttributes) {
-    try {
-      const { name } = body;
-      const existingProduct = await ProductRepository.getProductByName(name);
 
-      if (existingProduct) {
-        return "Este nome já está em uso.";
-      }
+    const { name } = body;
+    const existingProduct = await ProductRepository.getProductByName(name);
 
-      if (body.amount < 0) {
-        throw new Error("A quantidade do produto deve ser positiva!");
-      }
+    if (existingProduct) {
+      return "Este nome já está em uso.";
+    }
 
-      if (body.price < 0) {
-        throw new Error("O preco do produto deve ser positivo!");
-      }
+    if (body.amount < 0) {
+      throw new Error("A quantidade do produto deve ser positiva!");
+    }
+
+    if (body.price < 0) {
+      throw new Error("O preco do produto deve ser positivo!");
+    }
 
     const product = await ProductRepository.createProduct(body);
     if (product) return "Produto criado";

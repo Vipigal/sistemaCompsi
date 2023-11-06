@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { upload } from "../config/s3Config";
 import postService from "../domain/services/postService";
-import { upload } from "../config/s3Config";
 import {
   auth,
   checkRole,

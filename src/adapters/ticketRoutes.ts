@@ -3,6 +3,8 @@ import ticketService from "../domain/services/ticketService";
 import {auth} from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
 
+const router = express.Router();
+
 router.get("/:ID", async (req: Request, res: Response) => {
   try {
     const ticket = ticketService.getTicketById(parseInt(req.params.ID));
