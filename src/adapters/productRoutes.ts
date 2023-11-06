@@ -69,14 +69,21 @@ router.delete("/:ID", async (req: Request, res: Response) => {
   }
 });
 
-router.put("/:ID", async (req: Request, res: Response) => {
-  try {
-    await productService.updateProductbyId(parseInt(req.params.ID), req.body);
-    res.status(statusCodes.SUCCESS).send("Produto atualizado com sucesso");
-  } catch (err) {
-    const error = TrataErrorUtil(err);
-    res.status(error.status).json(error.message);
+router.put(
+  "/:ID",
+  upload.single("image"),
+  async (req: Request, res: Response) => {
+    try {
+      if (req.file) {
+        req.body.image = (req.file as Express.MulterS3.File).location;
+      } else req.body.image = null;
+      await productService.updateProductbyId(parseInt(req.params.ID), req.body);
+      res.status(statusCodes.SUCCESS).send("Produto atualizado com sucesso");
+    } catch (err) {
+      const error = TrataErrorUtil(err);
+      res.status(error.status).json(error.message);
+    }
   }
-});
+);
 
 export default router;
