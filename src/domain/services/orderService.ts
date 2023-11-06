@@ -17,6 +17,14 @@ const orderService = {
     await OrderRepository.createOrder(body, email);
     return "Pedido criado com sucesso";
   },
+  listOrders: async (limit: number, page: number) => {
+    const orders = await OrderRepository.listOrders();
+    if (orders) return orders;
+    else throw new Error("Não há pedidos cadastrados");
+  },
+  
+
+
 };
 
 export default orderService;
