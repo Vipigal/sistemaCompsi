@@ -1,13 +1,28 @@
 import { ProductRepository } from "../../repositories/productRepository";
-import { ProductAttributes } from "../models/Product";
+import { ProductAttributes, ProductType } from "../models/Product";
+
+function verificarTipoProduct(type: string | null): type is ProductType {
+  if (type === "EVENT" || type === "PRODUCT") return true;
+  return false;
+}
 
 const productService = {
   async createProduct(body: ProductAttributes) {
-    const { name } = body;
+    try {
+      const { name } = body;
+      const existingProduct = await ProductRepository.getProductByName(name);
 
-    const existingProduct = await ProductRepository.getProductByName(name);
-    if (existingProduct)
-      throw new Error("Este nome já está em uso");
+      if (existingProduct) {
+        return "Este nome já está em uso.";
+      }
+
+      if (body.amount < 0) {
+        throw new Error("A quantidade do produto deve ser positiva!");
+      }
+
+      if (body.price < 0) {
+        throw new Error("O preco do produto deve ser positivo!");
+      }
 
     const product = await ProductRepository.createProduct(body);
     if (product) return "Produto criado";
@@ -15,12 +30,16 @@ const productService = {
   },
 
   async deleteProductById(id: number) {
-    const product = await ProductRepository.getProductById(id);
-    if (!product) {
-      throw new Error("Produto não existente");
+    try {
+      const product = await ProductRepository.getProductById(id);
+      if (!product) {
+        throw new Error("Produto não existente");
+      }
+      ProductRepository.deleteProductById(id);
+      return "Produto deletado";
+    } catch (error: unknown) {
+      return "Erro ao deletar produto";
     }
-    await ProductRepository.deleteProductById(id);
-    return "Produto deletado";
   },
 
   async listProducts() {
@@ -28,7 +47,14 @@ const productService = {
     if (allProducts) return allProducts;
     else throw new Error("Erro ao buscar produto");
   },
-
+  async getProductByType(type: string) {
+    if (!verificarTipoProduct(type)) {
+      throw new Error("Tipo do produto inválido");
+    }
+    const productsByType = await ProductRepository.getProductsByType(type);
+    if (productsByType && productsByType.length) return productsByType;
+    else throw new Error("Nenhum produto com esse tipo cadastrado");
+  },
   async getProductById(id: number) {
     const product = await ProductRepository.getProductById(id);
     if (product) return product;

@@ -1,4 +1,5 @@
 import express, { Request, Response } from "express";
+import { upload } from "../config/s3Config";
 import postService from "../domain/services/postService";
 import { upload } from "../config/s3Config";
 import {
@@ -41,18 +42,23 @@ router.get("/:ID", async (req: Request, res: Response) => {
   }
 });
 
-router.post("/", auth, upload.single("Foto"), async (req: Request, res: Response) => {
-  try {
-    if (req.file) {
-      req.body.content = (req.file as Express.MulterS3.File).location;
-    } else req.body.content = null;
-    await postService.createPost(req.body, req.user?.Email);
-    res.status(200).json("Post criado com sucesso");
-  } catch (err) {
-    const error = TrataErrorUtil(err);
-    res.status(error.status).json(error.message);
+router.post(
+  "/",
+  auth,
+  upload.single("Foto"),
+  async (req: Request, res: Response) => {
+    try {
+      if (req.file) {
+        req.body.imageURL = (req.file as Express.MulterS3.File).location;
+      } else req.body.imageURL = null;
+      await postService.createPost(req.body, req.user?.Email);
+      res.status(200).json("Post criado com sucesso");
+    } catch (err) {
+      const error = TrataErrorUtil(err);
+      res.status(error.status).json(error.message);
+    }
   }
-});
+);
 
 router.delete("/:ID", auth, checkRole(["ADMIN", "GERENCIAL"]), async (req: Request, res: Response) => {
   await postService.deletePostByID(parseInt(req.params.ID));

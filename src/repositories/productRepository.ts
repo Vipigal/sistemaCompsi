@@ -1,21 +1,28 @@
 import prisma from "../config/dbConfig";
-import { ProductAttributes } from "../domain/models/Product";
+import { ProductAttributes, ProductType } from "../domain/models/Product";
 import { Optional } from "../utils/option";
 
 export interface IProductRepository {
   getProductById(id: number): Promise<ProductAttributes | null>;
   getProductByName(name: string): Promise<ProductAttributes | null>;
+  getProductsByType(type: ProductType): Promise<ProductAttributes[] | null>;
   getProductPrice(name: string): Promise<number | null>;
   getProducts(): Promise<ProductAttributes[] | null>;
-  createProduct(body: Optional<ProductAttributes, "id">): Promise<ProductAttributes | null>;
-  updateProductById(id: number, body: Partial<ProductAttributes>): Promise<ProductAttributes | null>;
+  createProduct(
+    body: Optional<ProductAttributes, "id">
+  ): Promise<ProductAttributes | null>;
+  updateProductById(
+    id: number,
+    body: Partial<ProductAttributes>
+  ): Promise<ProductAttributes | null>;
   deleteProductById(id: number): void;
 }
 
 export const ProductRepository: IProductRepository = {
   getProductById: async (id: number) => {
     try {
-      const product = await prisma.product.findUnique({ where: { id: id } });
+      const product = await prisma.product.findFirst({ where: { id: id } });
+      console.log(product);
       if (product) return product as ProductAttributes;
       else return null;
     } catch (error: unknown) {
@@ -27,6 +34,18 @@ export const ProductRepository: IProductRepository = {
     try {
       const product = await prisma.product.findFirst({ where: { name: name } });
       if (product) return product as ProductAttributes;
+      else return null;
+    } catch (error: unknown) {
+      console.log(error);
+      return null;
+    }
+  },
+  getProductsByType: async (type: ProductType) => {
+    try {
+      const product = await prisma.product.findMany({
+        where: { productType: type },
+      });
+      if (product) return product as ProductAttributes[];
       else return null;
     } catch (error: unknown) {
       console.log(error);

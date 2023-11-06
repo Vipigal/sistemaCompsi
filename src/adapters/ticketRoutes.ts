@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-const router = express.Router();
 import ticketService from "../domain/services/ticketService";
 import {auth} from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
@@ -26,7 +25,10 @@ router.post("/", auth, async (req: Request, res: Response) => {
 
 router.put("/:ID", async (req: Request, res: Response) => {
   try {
-    const ticket = ticketService.updateTicketById(parseInt(req.params.ID), req.body);
+    const ticket = ticketService.updateTicketById(
+      parseInt(req.params.ID),
+      req.body
+    );
     res.status(200).json(ticket);
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);

@@ -55,6 +55,7 @@ model User {
   password      String
   contactNumber String
   profilePicUrl String?
+  profilePicUrl String?
   userType      Role     @default(ALUNO)
   description   String?
   posts         Post[]
@@ -64,6 +65,10 @@ model User {
 }
 
 model Post {
+  id          Int      @id @default(autoincrement())
+  title       String
+  subtitle    String?
+  imageURL    String?
   id          Int      @id @default(autoincrement())
   title       String
   subtitle    String?
@@ -91,6 +96,7 @@ model Product {
   description String?
   price       Float
   image       String?
+  amount      Int      @default(0)
   productType Category @default(PRODUCT)
   order       Order[]
   createdAt   DateTime @default(now())

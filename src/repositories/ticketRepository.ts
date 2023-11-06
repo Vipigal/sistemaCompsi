@@ -1,12 +1,13 @@
-
 import prisma from "../config/dbConfig";
 import { TicketAttributes } from "../domain/models/Ticket";
-import { Optional } from "../utils/option";
 
 export interface ITicketRepository {
   getTicketById(id: number): Promise<TicketAttributes | null>;
   getTickets(): Promise<TicketAttributes[] | null>;
-  createTicket( body: TicketAttributes, email: string): Promise<TicketAttributes | null>;
+  createTicket(
+    body: TicketAttributes,
+    email: string
+  ): Promise<TicketAttributes | null>;
   updateTicketById(
     id: number,
     body: Partial<TicketAttributes>
@@ -14,9 +15,7 @@ export interface ITicketRepository {
   deleteTicketById(id: number): void;
 }
 
-
 export const TicketRepository: ITicketRepository = {
-
   async getTicketById(id: number): Promise<TicketAttributes | null> {
     try {
       const ticket = await prisma.ticket.findFirst({ where: { id: id } });
@@ -45,7 +44,7 @@ export const TicketRepository: ITicketRepository = {
           title: body.title,
           content: body.content,
           status: body.status,
-          authorEmail: email
+          authorEmail: email,
         },
       });
       if (newTicket) return newTicket as TicketAttributes;

@@ -1,9 +1,6 @@
 import express, { Request, Response } from "express";
 import orderService from "../domain/services/orderService";
-import {
-  auth,
-  checkRole,
-} from "../middlewares/auth";
+import { auth } from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
 import { statusCodes } from "../utils/statusCodes";
 
