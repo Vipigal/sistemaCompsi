@@ -13,7 +13,6 @@ const postService = {
     if (!body.title) {
       throw new Error("O título é obrigatório.");
     }
-    body.published = true;
     if (!email) {
       throw new Error("Usuário não logado");
     }
@@ -45,12 +44,17 @@ const postService = {
     return users;
   },
   async deletePostByID(id: number) {
-    try {
       await PostRepository.deletePostByID(id);
-      return "Post deletado";
-    } catch (error: unknown) {
-      return "Erro ao deletar post";
-    }
+      throw new Error("Post deletado");
+
+  },
+  async updatePostByID(id: number, body: Partial<PostAttributes>){
+    if(!id)
+      throw new Error("Post não existente");
+
+    const post = await PostRepository.updatePostByID(id, body);
+    if (post) return post;
+    else throw new Error("Erro ao atualizar post");
   },
 };
 

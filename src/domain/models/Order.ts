@@ -13,4 +13,5 @@ export interface OrderAttributes {
 
   amount: number;
   fee: number;
+  createdAt: Date;
 }

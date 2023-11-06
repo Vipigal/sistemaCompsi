@@ -60,6 +60,7 @@ model User {
   posts         Post[]
   tickets       Ticket[]
   order         Order[]
+  createdAt     DateTime @default(now())
 }
 
 model Post {
@@ -68,19 +69,20 @@ model Post {
   subtitle    String?
   imageURL    String?
   description String?
-  published   Boolean  @default(false)
   author      User?    @relation(fields: [authorEmail], references: [email])
   authorEmail String?
   type        PostType @default(DEFAULT)
+  createdAt   DateTime @default(now())
 }
 
 model Ticket {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   content     String
-  status      Status  @default(NOVO)
-  author      User?   @relation(fields: [authorEmail], references: [email])
+  status      Status   @default(NOVO)
+  author      User?    @relation(fields: [authorEmail], references: [email])
   authorEmail String?
+  createdAt   DateTime @default(now())
 }
 
 model Product {
@@ -92,6 +94,7 @@ model Product {
   amount      Int      @default(0)
   productType Category @default(PRODUCT)
   order       Order[]
+  createdAt   DateTime @default(now())
 }
 
 model Order {
@@ -106,6 +109,7 @@ model Order {
   productName  String
   productPrice Float
 
-  amount Int
-  fee    Float @default(0)
+  amount    Int
+  fee       Float    @default(0)
+  createdAt DateTime @default(now())
 }

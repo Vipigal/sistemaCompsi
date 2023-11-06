@@ -10,10 +10,7 @@ export interface IUserRepository {
   createUser(
     body: Optional<UserAttributes, "id">
   ): Promise<UserAttributes | null>;
-  updateUserById(
-    id: number,
-    body: Partial<UserAttributes>
-  ): Promise<UserAttributes | null>;
+  updateUserById(id: number, body: Partial<UserAttributes>): Promise<UserAttributes | null>;
   deleteUserById(id: number): void;
 }
 

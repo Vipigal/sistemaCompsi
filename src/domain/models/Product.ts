@@ -8,4 +8,5 @@ export interface ProductAttributes {
   image: string | null;
   productType: ProductType;
   amount: number;
+  createdAt: Date;
 }

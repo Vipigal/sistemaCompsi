@@ -8,6 +8,7 @@ export interface IPostRepository {
   getPostById(id: number): Promise<PostAttributes | null>;
   getAllPosts(type: PostType | null): Promise<PostAttributes[] | null>;
   deletePostByID(id: number): void;
+  updatePostByID(id: number, body: Partial<PostAttributes>): Promise<PostAttributes | null>;
 }
 
 export const PostRepository: IPostRepository = {
@@ -18,7 +19,6 @@ export const PostRepository: IPostRepository = {
           title: body.title,
           imageURL: body.imageURL,
           description: body.description,
-          published: body.published,
           authorEmail: email,
           type: body.type
         },
@@ -43,12 +43,18 @@ export const PostRepository: IPostRepository = {
   async getAllPosts(type: PostType | null) {
     try {
       let post;
-      if(!type)
+      if (!type)
         post = await prisma.post.findMany();
       else
-        post = await prisma.post.findMany({
-          where: {type: type}
-        });
+        if (type === "BANNER" || type === "DEFAULT")
+          post = await prisma.post.findMany({
+            where: { type: type }
+          });
+        else
+          post = await prisma.post.findFirst({
+            where: { type: type },
+            orderBy: { createdAt: 'desc' }
+          });
       if (post) return post as PostAttributes[];
       else return null;
     } catch (error) {
@@ -63,6 +69,18 @@ export const PostRepository: IPostRepository = {
           id: id,
         },
       });
+    } catch (error: unknown) {
+      console.log(error);
+      return null;
+    }
+  },
+  updatePostByID: async (id: number, body: Partial<PostAttributes>) => {
+    try {
+      const updatedPost = await prisma.post.update({
+        where: { id: id },
+        data: body
+      });
+      return updatedPost;
     } catch (error: unknown) {
       console.log(error);
       return null;

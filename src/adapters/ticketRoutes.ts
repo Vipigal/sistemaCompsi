@@ -1,7 +1,8 @@
 import express, { Request, Response } from "express";
 import ticketService from "../domain/services/ticketService";
-import { auth } from "../middlewares/auth";
+import {auth} from "../middlewares/auth";
 import { TrataErrorUtil } from "../utils/errorHandler";
+
 const router = express.Router();
 
 router.get("/:ID", async (req: Request, res: Response) => {
@@ -17,7 +18,7 @@ router.get("/:ID", async (req: Request, res: Response) => {
 router.post("/", auth, async (req: Request, res: Response) => {
   try {
     await ticketService.createTicket(req.body, req.user?.Email);
-    res.status(200).json("Usuário criado com sucesso!");
+    res.status(200).json("Ticket criado com sucesso!");
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);
     res.status(error.status).json(error.message);
@@ -41,7 +42,7 @@ router.delete("/:ID", async (req: Request, res: Response) => {
     await ticketService.deleteTicketById(parseInt(req.params.ID));
     res
       .status(200)
-      .json(`Usuário com id ${req.params.ID} deletado com sucesso!`);
+      .json(`Ticket com id ${req.params.ID} deletado com sucesso!`);
   } catch (err: unknown) {
     const error = TrataErrorUtil(err);
     res.status(error.status).json(error.message);
