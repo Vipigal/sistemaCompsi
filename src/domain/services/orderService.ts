@@ -1,6 +1,7 @@
 import { OrderRepository } from "../../repositories/orderRepository";
 import { OrderAttributes } from "../models/Order";
 import productService from "./productService";
+import userService from "./userService";
 
 const orderService = {
   createOrder: async (body: OrderAttributes, email: string | undefined) => {
@@ -37,16 +38,27 @@ const orderService = {
     return orders; 
   },
 
+  async listOrdersByUser(email: string): Promise<OrderAttributes[] | null>{
+    if(!await userService.getUserByEmail(email))
+    throw new Error("Usuário Não encontrado")
+    const orders = await OrderRepository.listOrdersByUser(email); 
+    return orders; 
+  },
+
+async getOrderByID(id: number): Promise<OrderAttributes | null>{
+  const orders = await OrderRepository.getOrderByID(id); 
+  return orders;
+},
+
+async deleteOrderByID(id: number): Promise<void>{
+  const order = await OrderRepository.getOrderByID(id);
+  if (!order) {
+    throw new Error("Produto não existente");
+  }
+  OrderRepository.deleteOrderByID(id);
+}
 };
 
 
 
 export default orderService;
-
-/*
-
-listOrdersByUser(email: string): Promise<OrderAttributes[] | null>;
-getOrderByID(id: number): Promise<OrderAttributes | null>;
-deleteOrderByID(id: number): void;
-
-*/
