@@ -17,7 +17,7 @@ O projeto desenvolvido será um website para o DAcompsci do ICEx, que tem como o
 Ele terá uma parte expositiva, com paginas voltadas ao usuário (aluno), além de uma parte que passe por um login para administradores acessarem e realizarem o controle do seu inventário.
 A ideia principal é dar estrutura para permitir a divulgacao e venda de ingressos de eventos para os alunos (algo como um sympla) e para integrar um controle (admin dashboard) de tudo que pode ser alugado/vendido pelo DA (camisas, escaninhos e mais).
 
-#Arquitetura 
+# Arquitetura 
 A arquitetura hexagonal, é uma abordagem de design de software que visa tornar os sistemas mais flexíveis, testáveis e desacoplados. Ela alcança isso separando o sistema em camadas distintas, facilitando a manutenção e a evolução do software. Isso também torna os testes automatizados mais simples, permitindo uma adaptação fácil a mudanças nos requisitos ou tecnologias. A arquitetura promove a reutilização de código, isolamento de tecnologias e é útil em sistemas empresariais e aplicações críticas, onde a manutenção a longo prazo é fundamental.
 No SistemaCompsi os adaptadores e portas são as pastas "adapters" e "repository", nos adaptadores são armazenadas rotas para a API, já no repository desempenha um papel na separação das preocupações e na implementação de um dos princípios-chave da arquitetura hexagonal: a separação entre a lógica de negócios e o acesso a dados.
 
