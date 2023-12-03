@@ -8,9 +8,12 @@ export interface IUserRepository {
   getUserById(id: number): Promise<UserAttributes | null>;
   getUsers(): Promise<UserAttributes[] | null>;
   createUser(
-    body: Optional<UserAttributes, "id">
+    body: Optional<UserAttributes, "id" | "createdAt">
   ): Promise<UserAttributes | null>;
-  updateUserById(id: number, body: Partial<UserAttributes>): Promise<UserAttributes | null>;
+  updateUserById(
+    id: number,
+    body: Partial<UserAttributes>
+  ): Promise<UserAttributes | null>;
   deleteUserById(id: number): void;
 }
 
@@ -20,7 +23,7 @@ async function hashPassword(Senha: string) {
 }
 
 export const UserRepository: IUserRepository = {
-  async getUserByEmail(email: string){
+  async getUserByEmail(email: string) {
     try {
       const user = await prisma.user.findFirst({ where: { email: email } });
       if (user) return user as UserAttributes;
@@ -31,7 +34,7 @@ export const UserRepository: IUserRepository = {
     }
   },
 
-  async getUserById(id: number){
+  async getUserById(id: number) {
     try {
       const user = await prisma.user.findFirst({ where: { id: id } });
       if (user) return user as UserAttributes;
@@ -52,7 +55,7 @@ export const UserRepository: IUserRepository = {
       return null;
     }
   },
-  createUser: async (body: Optional<UserAttributes, "id">) => {
+  createUser: async (body: Optional<UserAttributes, "id" | "createdAt">) => {
     try {
       const hashedPass = await hashPassword(body.password);
       body.password = hashedPass;

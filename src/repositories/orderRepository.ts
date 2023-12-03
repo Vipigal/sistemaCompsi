@@ -5,8 +5,14 @@ import { Optional } from "../utils/option";
 import { ProductRepository } from "./productRepository";
 
 export interface IOrderRepository {
-  createOrder(body: Optional<OrderAttributes, "id">, email: string): Promise<OrderAttributes | null>;
-  updateOrderByID(id: number, body: Partial<OrderAttributes>): Promise<OrderAttributes | null>;
+  createOrder(
+    body: Optional<OrderAttributes, "id" | "createdAt">,
+    email: string
+  ): Promise<OrderAttributes | null>;
+  updateOrderByID(
+    id: number,
+    body: Partial<OrderAttributes>
+  ): Promise<OrderAttributes | null>;
   listOrders(): Promise<OrderAttributes[] | null>;
   listOrdersByProduct(productName: string): Promise<OrderAttributes[] | null>;
   listOrdersByUser(email: string): Promise<OrderAttributes[] | null>;
@@ -14,9 +20,11 @@ export interface IOrderRepository {
   deleteOrderByID(id: number): void;
 }
 
-
 export const OrderRepository: IOrderRepository = {
-  createOrder: async (body: Optional<OrderAttributes, "id">, email: string) => {
+  createOrder: async (
+    body: Optional<OrderAttributes, "id" | "createdAt">,
+    email: string
+  ) => {
     try {
       const price = await ProductRepository.getProductPrice(body.productName);
 
@@ -66,7 +74,7 @@ export const OrderRepository: IOrderRepository = {
   listOrdersByProduct: async (productName: string) => {
     try {
       const orders = await prisma.order.findMany({
-        where: { productName: productName }
+        where: { productName: productName },
       });
       if (orders) return orders as OrderAttributes[];
       else return null;
@@ -78,7 +86,7 @@ export const OrderRepository: IOrderRepository = {
   listOrdersByUser: async (email: string) => {
     try {
       const orders = await prisma.order.findMany({
-        where: { userEmail: email }
+        where: { userEmail: email },
       });
       if (orders) return orders as OrderAttributes[];
       else return null;
@@ -90,7 +98,7 @@ export const OrderRepository: IOrderRepository = {
   getOrderByID: async (id: number) => {
     try {
       const order = await prisma.order.findFirst({
-        where: { id: id }
+        where: { id: id },
       });
       if (order) return order as OrderAttributes;
       else return null;
@@ -102,11 +110,11 @@ export const OrderRepository: IOrderRepository = {
   deleteOrderByID: async (id: number) => {
     try {
       await prisma.order.delete({
-        where: {id: id}
+        where: { id: id },
       });
     } catch (error: unknown) {
       console.log(error);
       return null;
     }
-  }
+  },
 };
